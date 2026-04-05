@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خطة العشرين يوماً في الكيمياء - التحصيلي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#070b14;--bg2:#0f1628;--card:#151d30;--card-hover:#1a2540;--cyan:#00e5ff;--green:#00e676;--orange:#ff9100;--pink:#ff4081;--purple:#b388ff;--yellow:#ffd600;--red:#ff5252;--txt:#e0e6f0;--txt2:#7b8da6;--txt3:#4a5a70;--border:rgba(255,255,255,0.06)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(0,229,255,.04),transparent 60%),radial-gradient(ellipse at 70% 100%,rgba(179,136,255,.03),transparent 60%);pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--txt3);border-radius:3px}
+.hero{position:relative;z-index:1;text-align:center;padding:50px 20px 30px}
+.hero::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.2}
+.badge{display:inline-block;padding:5px 18px;background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(179,136,255,.08));border:1px solid rgba(0,229,255,.15);border-radius:50px;font-size:12px;color:var(--cyan);letter-spacing:3px;margin-bottom:16px}
+.hero h1{font-family:'Cairo',sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:900;background:linear-gradient(135deg,#fff,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;margin-bottom:10px}
+.hero p{font-size:15px;color:var(--txt2);max-width:500px;margin:0 auto;line-height:1.8}
+.stats{position:relative;z-index:1;display:flex;justify-content:center;gap:30px;padding:20px;flex-wrap:wrap}
+.stat{text-align:center}.stat-num{font-family:'Cairo',sans-serif;font-size:28px;font-weight:900;color:var(--cyan)}.stat-label{font-size:12px;color:var(--txt3);margin-top:2px}
+.progress-wrap{position:relative;z-index:1;max-width:850px;margin:10px auto 30px;padding:0 20px}
+.progress-box{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;padding:16px 20px;backdrop-filter:blur(10px)}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-top span{font-size:13px;color:var(--txt2)}.progress-top b{font-family:'Cairo',sans-serif;font-size:20px;color:var(--cyan)}
+.progress-track{height:6px;background:rgba(255,255,255,.04);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:10px;transition:width .8s ease}
+.grid{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 20px;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden}
+.day-card:hover{background:var(--card-hover);border-color:rgba(0,229,255,.15);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.day-card::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));opacity:0;transition:opacity .3s}
+.day-card:hover::before{opacity:1}
+.day-num{font-family:'Cairo',sans-serif;font-size:36px;font-weight:900;opacity:.08;position:absolute;top:10px;left:16px}
+.day-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.day-title{font-family:'Cairo',sans-serif;font-weight:700;font-size:16px;margin-bottom:4px}
+.day-desc{font-size:12px;color:var(--txt3);margin-bottom:14px;line-height:1.6}
+.day-meta{display:flex;justify-content:space-between;align-items:center}
+.day-count{font-size:11px;color:var(--txt2);background:rgba(255,255,255,.04);padding:3px 10px;border-radius:20px}
+.day-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
+.status-new{color:var(--cyan);background:rgba(0,229,255,.08)}
+.status-done{color:var(--green);background:rgba(0,230,118,.08)}
+.status-progress{color:var(--orange);background:rgba(255,145,0,.08)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;backdrop-filter:blur(6px);overflow-y:auto}
+.overlay.active{display:block}
+.quiz-container{max-width:800px;margin:30px auto;padding:20px;animation:slideUp .4s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.quiz-header{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;position:relative}
+.quiz-close{position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--txt2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.quiz-close:hover{background:rgba(255,82,82,.1);color:var(--red);border-color:rgba(255,82,82,.2)}
+.quiz-day-title{font-family:'Cairo',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px}
+.quiz-day-topic{font-size:13px;color:var(--txt2);margin-bottom:12px}
+.subtopics-list{margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px}
+.subtopic-tag{font-size:11px;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--txt2);line-height:1.4}
+.subtopic-tag b{color:var(--cyan);margin-right:4px}
+.quiz-progress{display:flex;gap:2px;margin-bottom:12px;flex-wrap:wrap}
+.quiz-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.06);transition:background .3s;flex-shrink:0}
+.quiz-dot.correct{background:var(--green)}.quiz-dot.wrong{background:var(--red)}
+.quiz-info{display:flex;gap:16px;font-size:12px;color:var(--txt3)}.quiz-info span{display:flex;align-items:center;gap:4px}
+.timer-box{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;font-family:'Cairo',sans-serif;font-size:14px;color:var(--txt2)}
+.timer-box .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;transition:border-color .3s}
+.q-card.correct-card{border-color:rgba(0,230,118,.2)}.q-card.wrong-card{border-color:rgba(255,82,82,.2)}
+.q-number{font-size:11px;color:var(--txt3);margin-bottom:8px;font-weight:700;letter-spacing:1px}
+.q-text{font-size:15px;font-weight:500;line-height:1.9;margin-bottom:16px}
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-option{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s;font-size:14px;line-height:1.7}
+.q-option:hover:not(.disabled){background:rgba(0,229,255,.04);border-color:rgba(0,229,255,.15)}
+.q-option .letter{min-width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--txt2);flex-shrink:0}
+.q-option.is-correct{background:rgba(0,230,118,.06);border-color:rgba(0,230,118,.3)}.q-option.is-correct .letter{background:var(--green);color:var(--bg)}
+.q-option.is-wrong{background:rgba(255,82,82,.06);border-color:rgba(255,82,82,.3)}.q-option.is-wrong .letter{background:var(--red);color:#fff}
+.q-option.disabled{cursor:default;opacity:.7}.q-option.disabled.dim{opacity:.4}
+.q-explanation{display:none;margin-top:12px;padding:12px 16px;background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.1);border-radius:10px;font-size:13px;color:var(--green);line-height:1.8}
+.q-explanation.show{display:block}
+.quiz-footer{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px}
+.quiz-score{font-family:'Cairo',sans-serif}.quiz-score b{font-size:24px;color:var(--cyan)}.quiz-score span{font-size:13px;color:var(--txt3);margin-right:6px}
+.btn{padding:10px 24px;border-radius:10px;border:none;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),#0091ea);color:var(--bg);box-shadow:0 4px 15px rgba(0,229,255,.2)}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,229,255,.3)}
+.btn-reset{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.15);color:var(--red)}.btn-reset:hover{background:rgba(255,82,82,.15)}
+.results-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;backdrop-filter:blur(10px);align-items:center;justify-content:center}
+.results-overlay.active{display:flex}
+.results-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;text-align:center;max-width:420px;width:90%;animation:slideUp .5s ease}
+.results-icon{font-size:60px;margin-bottom:16px}.results-title{font-family:'Cairo',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;line-height:1.6}
+.results-score{font-family:'Cairo',sans-serif;font-size:48px;font-weight:900;color:var(--cyan);margin:16px 0}
+.results-detail{font-size:14px;color:var(--txt2);line-height:1.8;margin-bottom:24px}
+.results-bar{height:8px;background:rgba(255,255,255,.05);border-radius:4px;margin:16px 0 24px;overflow:hidden}
+.results-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+@media(max-width:600px){.hero{padding:30px 16px 20px}.hero h1{font-size:1.6rem}.grid{grid-template-columns:1fr;padding:0 16px 40px}.stats{gap:16px}.stat-num{font-size:22px}.quiz-container{padding:12px}.q-card{padding:16px}.subtopics-list{gap:4px}.subtopic-tag{font-size:10px;padding:3px 8px}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="badge">الاختبار التحصيلي</div>
+  <h1>🧪 خطة العشرين يوماً في الكيمياء</h1>
+  <p>٥٢٨ سؤال اختيار من متعدد — ٨ أقسام — ٢٠ اختبار يومي<br>راجع الكيمياء وتابع تقدمك يوماً بيوم</p>
+  <div style="margin-top:16px;font-size:13px;color:var(--cyan);opacity:.85;font-weight:500">تصميم وإعداد الأستاذ / أحمد السيد علي</div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="totalQ">528</div><div class="stat-label">سؤال</div></div>
+  <div class="stat"><div class="stat-num" id="totalDone">0 / 20</div><div class="stat-label">مكتمل</div></div>
+  <div class="stat"><div class="stat-num" id="totalCorrect">0</div><div class="stat-label">إجابة صحيحة</div></div>
+  <div class="stat"><div class="stat-num" id="totalAvg">0%</div><div class="stat-label">المعدل العام</div></div>
+</div>
+<div class="progress-wrap"><div class="progress-box"><div class="progress-top"><span>التقدم الكلي</span><b id="progressPct">0%</b></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div></div>
+<div class="grid" id="dayGrid"></div>
+<div class="overlay" id="quizOverlay"><div class="quiz-container" id="quizContainer"></div></div>
+<div class="results-overlay" id="resultsOverlay"><div class="results-box" id="resultsBox"></div></div>
+<script>
+const DAYS_DATA = [
+  {
+    title: "اليوم الأول",
+    topic: "القسم الأول: مقدمة في علم الكيمياء",
+    icon: "🧪",
+    color: "#00e5ff",
+    subtopics: [
+      {name:"طبقة الأوزون", count:9},
+      {name:"المادة وحالاتها", count:8},
+      {name:"الخواص الفيزيائية والكيميائية", count:8},
+      {name:"التغيرات الفيزيائية والكيميائية", count:10},
+      {name:"العنصر والمركب", count:7},
+      {name:"التفاعل الكيميائي وأنواعه", count:8},
+      {name:"وزن المعادلات والحسابات الكيميائية", count:7}
+    ],
+    questions: [
+      {q:"فرع الكيمياء الذي يقوم بدراسة أنواع المواد ومكوناتها:", options:["الكيمياء الذرية", "الكيمياء الحيوية", "الكيمياء العضوية", "الكيمياء التحليلية"], answer:3, explanation:"الكيمياء التحليلية"},
+      {q:"علم يقوم بدراسة نظريات تركيب المادة:", options:["الكيمياء التحليلية", "الكيمياء الذرية", "الكيمياء الفيزيائية", "الكيمياء النووية"], answer:1, explanation:"كيمياء الذرة تدرس"},
+      {q:"فرع الكيمياء الذي يستقصي تحلل مواد التغليف في البيئة:", options:["الكيمياء الحيوية", "الكيمياء البيئية", "الكيمياء الصناعية", "الكيمياء الفيزيائية"], answer:1, explanation:"الكيمياء البيئية تهتم"},
+      {q:"الأشعة التي يمتص معظمها غاز الأوزون:", options:["تحت الحمراء", "فوق البنفسجية", "السينية", "جاما"], answer:1, explanation:"طبقة الأوزون تمتص"},
+      {q:"غاز الأوزون O₃ يوجد في طبقة تُسمى:", options:["الستراتوسفير", "التروبوسفير", "الميزوسفير", "الثيرموسفير"], answer:0, explanation:"يتكون غاز الأوزون في"},
+      {q:"ما عدد جزيئات الأوزون الناتجة عن 18 ذرة أكسجين؟", options:["2", "3", "6", "9"], answer:2, explanation:"O₃ = 3 ذرات. 18 ÷ 3 ="},
+      {q:"أي المواد التالية يسبب تناقصاً في طبقة الأوزون؟", options:["أكاسيد الكبريت", "الكلوروفلوروكربون", "الأكسجين", "ثاني أكسيد الكربون"], answer:1, explanation:"مركبات CFCs هي المسبب"},
+      {q:"تمكن من قياس كمية الأوزون:", options:["رذرفورد", "كروكس", "دوبسون", "مليكان"], answer:2, explanation:"الباحث دوبسون قاس كمية"},
+      {q:"المعدل الطبيعي لكمية الأوزون يعادل:", options:["150 DU", "300 DU", "400 DU", "600 DU"], answer:1, explanation:"المستوى الطبيعي = 300"},
+      {q:"أي التالي ليس من قواعد السلامة في المختبر؟", options:["المعطف", "القفازات", "لبس نظارات الأمان", "لبس العدسات اللاصقة"], answer:3, explanation:"العدسات اللاصقة ليست"},
+      {q:"دراسة مركبات CFCs وتفاعلاتها مع الأوزون بدون دليل بيّن:", options:["البحث النظري", "البحث العملي", "البحث التجريبي", "البحث التطبيقي"], answer:0, explanation:"البحث النظري يهدف"},
+      {q:"بحث يُجرى لحل مشكلة محددة:", options:["البحث النظري", "البحث الفلسفي", "البحث الوصفي", "البحث التطبيقي"], answer:3, explanation:"البحث التطبيقي لحل"},
+      {q:"كل ما له كتلة ويشغل حيزاً من الفراغ:", options:["الحرارة", "الضوء", "المادة", "الصوت"], answer:2, explanation:"تعريف المادة: كل ما"},
+      {q:"أي التالي يُعد مادة؟", options:["الضوء", "الحرارة", "الصوت", "الهواء"], answer:3, explanation:"الهواء مادة لأن له"},
+      {q:"أي التالي لا يُصنَّف مادة؟", options:["الماء", "الهواء", "الحرارة", "التراب"], answer:2, explanation:"الحرارة طاقة وليست"},
+      {q:"مقياس لكمية المادة فقط:", options:["الحجم", "الكتلة", "الكثافة", "الوزن"], answer:1, explanation:"الكتلة مقياس كمية"},
+      {q:"أي العبارات يصف مادة في الحالة الصلبة؟", options:["لها صفة الجريان", "يمكن ضغطها", "تأخذ شكل الوعاء", "جسيماتها متلاصقة بقوة"], answer:3, explanation:"الصلبة: جسيمات"},
+      {q:"أي حالات المادة شكلها وحجمها ثابتان؟", options:["الصلبة", "السائلة", "الغازية", "البلازما"], answer:0, explanation:"الصلبة فقط لها شكل"},
+      {q:"الحالة الفيزيائية للزئبق في الطبيعة:", options:["بلازما", "سائل", "غاز", "صلب"], answer:1, explanation:"الزئبق سائل عند درجة"},
+      {q:"حالة المادة التي شكلها وحجمها غير ثابتين وجسيماتها متباعدة:", options:["البلازما", "الغازية", "الصلبة", "السائلة"], answer:1, explanation:"الحالة الغازية شكلها"},
+      {q:"أي الخواص التالية خاصية فيزيائية؟", options:["تكوّن صدأ الحديد", "احتراق قطعة خشب", "فقد الفضة بريقها", "توصيل النحاس للكهرباء"], answer:3, explanation:"التوصيل الكهربائي"},
+      {q:"أي التالي من الخواص النوعية (المميزة)؟", options:["الحجم", "السرعة", "الطول", "اللون"], answer:3, explanation:"اللون خاصية نوعية لا **◼ وزن المعادلات والحسابات"},
+      {q:"تُمثّل رائحة العطر:", options:["خاصية كمية", "خاصية فيزيائية", "تغيراً كيميائياً", "تغيراً فيزيائياً"], answer:1, explanation:"الرائحة خاصية"},
+      {q:"أي التالي يُمثّل خاصية كمية؟", options:["يذوب الملح في الماء", "تركيز المحلول 1 mol/L", "الصوديوم كاوي للجلد", "السحب تحوي أمطاراً"], answer:1, explanation:"التركيز خاصية كمية"},
+      {q:"الصفة الكمية لورقة الإجابة بين يديك:", options:["لونها", "مقاسها", "رائحتها", "ملمسها"], answer:1, explanation:"المقاس صفة كمية"},
+      {q:"أيّ التالي خاصية كيميائية؟", options:["صدأ الحديد بالهواء الرطب", "غليان الماء عند 100°C", "انصهار الزبدة", "ذوبان الملح"], answer:0, explanation:"الصدأ خاصية كيميائية"},
+      {q:"أي التالي خاصية كيميائية؟", options:["الماء عديم اللون", "تحلل السكر إلى كربون وبخار ماء", "ملح الطعام بلوري صلب", "أول أكسيد الكربون يتصاعد"], answer:1, explanation:"تحلل السكر ينتج مواد"},
+      {q:"أي خواص ملح الطعام التالية خاصية كيميائية؟", options:["طعمه مالح", "لونه أبيض", "شكله بلوري", "لا يتفاعل مع الماء النقي"], answer:3, explanation:"عدم التفاعل خاصية"},
+      {q:"التغيّر الذي يحدث دون فقد الخواص الأصلية:", options:["الفيزيائي", "الكيميائي", "الحيوي", "البيولوجي"], answer:0, explanation:"التغير الفيزيائي لا"},
+      {q:"أيّ التالي تغير فيزيائي؟", options:["هضم الطعام", "صدأ الفولاذ", "كسر الزجاج", "حرق الخشب"], answer:2, explanation:"كسر الزجاج لا يغير"},
+      {q:"أيّ التالي من التغيرات الفيزيائية؟", options:["الصدأ", "الاحتراق", "التخمر", "الانصهار"], answer:3, explanation:"الانصهار تغير"},
+      {q:"درجة تساوي ضغط بخار السائل مع الضغط الجوي:", options:["الانصهار", "التكثف", "التسامي", "الغليان"], answer:3, explanation:"تعريف درجة الغليان."},
+      {q:"تحول المادة من صلبة إلى غازية دون المرور بالسائلة:", options:["التسامي", "الترسب", "التبخر", "التكثف"], answer:0, explanation:"التسامي: صلب → غاز"},
+      {q:"أي العمليات تُمثّل التسامي؟", options:["I₂(s)→I₂(g)", "Br₂(l)→Br₂(s)", "C₁₀H₈(s)→C₁₀H₈(l)", "CaCO₃(s)→CaO(s)+CO₂(g)"], answer:0, explanation:"I₂(s)→I₂(g) تسامي"},
+      {q:"يزيد حجمه عند التحول من سائل إلى صلب:", options:["CO₂", "HCl", "H₂O", "NH₃"], answer:2, explanation:"الماء يتمدد عند"},
+      {q:"العملية التي يصاحبها انبعاث طاقة:", options:["التبلور", "التبخر", "التسامي", "التكثف"], answer:3, explanation:"التكثف عملية طاردة"},
+      {q:"تغيّر في تركيب المادة يؤدي لتكوين مواد جديدة:", options:["الفيزيائي", "الخاصية الفيزيائية", "الكيميائي", "التجمد"], answer:2, explanation:"التغير الكيميائي يغير"},
+      {q:"أي التالي تغير كيميائي؟", options:["ذوبان الجليد", "تكثف البخار", "احتراق فتيلة الشمعة", "انصهار الزئبق"], answer:2, explanation:"الاحتراق ينتج مواد"},
+      {q:"مادة ذات تركيب محدد وتتكون من عدة عناصر:", options:["المخلوط المتجانس", "المخلوط غير المتجانس", "المركب", "النظير"], answer:2, explanation:"المركب: اتحاد عنصرين+"},
+      {q:"الخاصية التي تُميّز المركب أن مكوناته:", options:["متحدة بأي نسبة", "تُفصل بالترشيح", "يحدث بينها تفاعل كيميائي", "لا تفقد خواصها"], answer:2, explanation:"مكونات المركب تتحد"},
+      {q:"يُعد ملح الطعام:", options:["عنصراً", "محلولاً", "مخلوطاً", "مركباً"], answer:3, explanation:"NaCl مركب من الصوديوم"},
+      {q:"يُصنف H₂SO₄ على أنه:", options:["مخلوط", "محلول", "عنصر", "مركب"], answer:3, explanation:"حمض الكبريتيك مركب"},
+      {q:"أي التالي مركب؟", options:["الفحم", "الأوزون", "صدأ الحديد", "الزئبق"], answer:2, explanation:"صدأ الحديد Fe₂O₃"},
+      {q:"نسبة كتلة Na إلى Cl في NaCl تُمثّل قانون:", options:["حفظ الكتلة", "حفظ الطاقة", "النسب الثابتة", "النسب المتضاعفة"], answer:2, explanation:"المركب يتكون من"},
+      {q:"كتلة الأكسجين في H₂O₂ إلى كتلته في H₂O تُمثّل قانون:", options:["حفظ الطاقة", "حفظ الكتلة", "النسب المتضاعفة", "النسب الثابتة"], answer:2, explanation:"مقارنة نسب عنصر في"},
+      {q:"نوع التفاعل الذي ينتج مادة واحدة:", options:["إحلال", "تفكك", "تكوين", "تحلّل"], answer:2, explanation:"التكوين: A+B→AB"},
+      {q:"أي التالي تفاعل تكوين؟", options:["2NaF→2Na+F₂", "Mg+Cl₂→MgCl₂", "2H₂O→2H₂+O₂", "MgCl₂→Mg+Cl₂"], answer:1, explanation:"Mg+Cl₂→MgCl₂ اتحاد"},
+      {q:"الناتج المكمل: CH₄+2O₂→CO₂+\_\_\_", options:["2H₂O", "2H₂", "CO", "O₂"], answer:0, explanation:"احتراق الميثان:"},
+      {q:"المعادلة التي تُمثّل احتراقاً:", options:["H₂+Cl₂→2HCl", "Mg+2HCl→MgCl₂+H₂", "KOH+HNO₃→KNO₃+H₂O", "CH₄+2O₂→CO₂+2H₂O"], answer:3, explanation:"الاحتراق = تفاعل مع"},
+      {q:"تفاعل من مادة واحدة ينتج مادتان أو أكثر:", options:["إحلال", "احتراق", "تفكك", "إضافة"], answer:2, explanation:"التفكك: AB→A+B"},
+      {q:"مرور تيار كهربائي في مصهور KBr ينتج بروم وبوتاسيوم:", options:["تكوين", "تفكك", "احتراق", "إحلال"], answer:1, explanation:"تفكك مركب واحد"},
+      {q:"نوع التفاعل: A+BX→AX+B", options:["إحلال بسيط", "إحلال مزدوج", "تفكك", "تكوين"], answer:0, explanation:"إحلال بسيط: عنصر أنشط"},
+      {q:"نوع التفاعل: AX+BY→AY+BX", options:["تفكك", "إحلال مزدوج", "تكوين", "إحلال بسيط"], answer:1, explanation:"إحلال مزدوج: تبادل"},
+      {q:"المعادلات الموزونة تحقق قانون:", options:["حفظ الطاقة", "حفظ الكتلة", "حفظ الشحنة", "النسب الثابتة"], answer:1, explanation:"تحقق قانون حفظ"},
+      {q:"تفاعل 12.2g من x مع 78.9g من y ونتج 91.1g من xy يُمثّل:", options:["النسب الثابتة", "حفظ الكتلة", "النسب المتضاعفة", "حفظ الطاقة"], answer:1, explanation:"12.2+78.9=91.1 → حفظ"},
+      {q:"تفاعل 20g من x مع y نتج 30g من xy، كتلة y:", options:["10", "20", "30", "50"], answer:0, explanation:"20+y=30 → y=10g"},
+      {q:"دراسة العلاقة بين المتفاعلات والنواتج:", options:["الحسابات الكيميائية", "المعادلات الكيميائية", "النسب المولية", "المادة المحددة"], answer:0, explanation:"الحسابات الكيميائية"},
+      {q:"أول خطوات الحسابات الكيميائية:", options:["حساب المولات", "حساب الكتل", "وزن المعادلة", "نسبة المولات"], answer:2, explanation:"أول خطوة: كتابة"},
+      {q:"معامل الهيدروجين x في: N₂+xH₂→2NH₃", options:["1", "2", "3", "6"], answer:2, explanation:"N₂+3H₂→2NH₃ إذن x=3."},
+      {q:"تفاعل يحوي 4 مواد، عدد النسب المولية الممكنة:", options:["20", "18", "12", "6"], answer:2, explanation:"n(n−1) = 4×3 = 12"}
+    ]
+  },
+  {
+    title: "اليوم الثاني",
+    topic: "القسم الثاني: نظريات الذرة والجدول الدوري (١)",
+    icon: "⚛️",
+    color: "#b388ff",
+    subtopics: [
+      {name:"أفكار الفلاسفة ونظرية دالتون", count:4},
+      {name:"الذرة والإلكترون", count:4},
+      {name:"مستويات الطاقة الرئيسة والثانوية", count:10},
+      {name:"التوزيع الإلكتروني", count:8},
+      {name:"التوزيع الإلكتروني للأيونات وإلكترونات التكافؤ", count:5},
+      {name:"تراكيب لويس والقاعدة الثمانية", count:3},
+      {name:"الجدول الدوري الحديث", count:8}
+    ],
+    questions: [
+      {q:"أول من اعتقد بوجود الذرات:", options:["دالتون", "ديموقريطوس", "رذرفورد", "شادويك"], answer:1, explanation:"ديموقريطوس أول من"},
+      {q:"أصغر جزء من العنصر ويحمل خواصه:", options:["الإلكترون", "البروتون", "الذرة", "النيوترون"], answer:2, explanation:"الذرة أصغر جزء يحتفظ"},
+      {q:"جسيمات سالبة تدور حول النواة:", options:["البروتونات", "النيوترونات", "الإلكترونات", "الفوتونات"], answer:2, explanation:"الإلكترونات جسيمات"},
+      {q:"أي التالي غير صحيح عن تركيب الذرة؟", options:["لا وجود للفراغ في تركيب الذرة", "وحدة تركيب العناصر", "تتكون المادة من أجزاء صغيرة تُسمى ذرات", "تختلف ذرات أي عنصر عن العناصر الأخرى"], answer:0, explanation:"يوجد فراغ كبير في"},
+      {q:"الباحث الذي اكتشف الإلكترون:", options:["رذرفورد", "طومسون", "أينشتاين", "بويل"], answer:1, explanation:"طومسون اكتشف"},
+      {q:"منطقة ثلاثية الأبعاد تصف الموقع المحتمل لوجود الإلكترون:", options:["المستوى", "الفراغ", "النواة", "الفوتون"], answer:0, explanation:"المستوى (المجال"},
+      {q:"السحابة الإلكترونية صورة لحظية لـ\_\_\_ الإلكترون حول النواة:", options:["طاقة", "حركة", "كتلة", "حجم"], answer:0, explanation:"السحابة الإلكترونية"},
+      {q:"«لا يمكن تحديد سرعة الإلكترون ومكانه بدقة في نفس الوقت»، تُمثّل مبدأ:", options:["هوند", "باولي", "هايزنبرج", "أوفباو"], answer:2, explanation:"مبدأ هايزنبرج للشك: من"},
+      {q:"عدد يحدد طاقة المجالات الذرية:", options:["عدد الكم الرئيس", "عدد الكم المداري", "عدد الكم الثانوي", "عدد الكم المغزلي"], answer:0, explanation:"عدد الكم الرئيس n يحدد"},
+      {q:"أي الأعداد التالية صحيح لعدد الكم الرئيس n؟", options:["0, 1, 2, 3", "1, 2, 3", "-2, -1, 0, 1, 2", "-½, 0, ½"], answer:1, explanation:"عدد الكم الرئيس يأخذ"},
+      {q:"أي التالي يُمثّل مستويات ثانوية لها الشكل الكروي؟", options:["1s, 2s", "1s, 2p", "3d, 2p", "3d, 4f"], answer:0, explanation:"المستوى الثانوي s له"},
+      {q:"عدد المجالات الفرعية في المجال الثانوي p:", options:["1", "3", "5", "7"], answer:1, explanation:"المجال p يحوي 3"},
+      {q:"عدد المجالات الفرعية في المجال الثانوي d:", options:["1", "3", "5", "7"], answer:2, explanation:"المجال d يحوي 5"},
+      {q:"عدد الإلكترونات التي يتسع لها المجال الفرعي 4d:", options:["4", "6", "10", "14"], answer:2, explanation:"المجال d يتسع لـ 10"},
+      {q:"أي المستويات التالية يحوي أكبر عدد من الإلكترونات؟", options:["f", "p", "s", "d"], answer:0, explanation:"المستوى f يتسع لـ 14"},
+      {q:"العدد الأقصى للإلكترونات في مستوى الطاقة الأول:", options:["2", "4", "6", "8"], answer:0, explanation:"2n² = 2(1)² = 2 **◼ فئات وموقع العنصر في الجدول"},
+      {q:"أقصى عدد إلكترونات في المستوى الثاني:", options:["2", "4", "8", "16"], answer:2, explanation:"2n² = 2(2)² = 8"},
+      {q:"أقصى عدد إلكترونات يستوعبه مستوى الطاقة الثالث:", options:["8", "18", "32", "16"], answer:1, explanation:"2n² = 2(3)² = 18"},
+      {q:"«كل إلكترون يشغل المجال الأقل طاقة» يُمثّل مبدأ:", options:["هوند", "باولي", "أوفباو", "بور"], answer:2, explanation:"مبدأ أوفباو (البناء"},
+      {q:"أي المستويات التالية ليس في الذرة؟", options:["3f", "4s", "5p", "4d"], answer:0, explanation:"المستوى f يبدأ من n=4 **◼ نصف القطر الذري وطاقة التأين"},
+      {q:"أي المستويات الثانوية أعلى في الطاقة؟", options:["4s", "3s", "3d", "2p"], answer:2, explanation:"3d أعلى طاقة من 4s"},
+      {q:"التوزيع الإلكتروني الصحيح لعنصر البورون ₅B حسب قاعدة هوند:", options:["↑↓\\|↑↓\\|↑\\|↑↓\\|↑↓\\|", "↑↓\\|↑↓\\|↑\\| \\| \\|", "↑↓\\|↑↑\\|↑\\|↑\\|↑\\|", "↑↓\\|↑↓\\|↑↓\\| \\| \\|"], answer:1, explanation:"B = 1s²2s²2p¹ → حسب"},
+      {q:"أي العناصر توزيعه 1s²2s²2p⁵؟", options:["₁₈Ar", "₉F", "₁₃Al", "₇N"], answer:1, explanation:"₉F = 9 إلكترونات:"},
+      {q:"التوزيع الإلكتروني لـ ₁₁Na في حالته المستقرة (علماً أن Ne = 10):", options:["\\[Ne\\]3s²", "\\[Ne\\]3s¹", "\\[Ne\\]3s¹3p¹", "\\[Ne\\]3s²3p¹"], answer:1, explanation:"Na = 11 إلكتروناً:"},
+      {q:"التوزيع الإلكتروني الصحيح لعنصر النحاس ₂₉Cu (علماً أن Ar = 18):", options:["\\[Ar\\]4s²", "\\[Ar\\]4s²3d⁹", "\\[Ar\\]4s¹3d¹⁰", "\\[Ar\\]4s²3d¹⁰4p¹"], answer:2, explanation:"Cu استثناء:"},
+      {q:"التوزيع الإلكتروني لعنصر الفضة ₄₇Ag (علماً أن Kr = 36):", options:["\\[Kr\\]5s²4d⁹", "\\[Kr\\]5s¹4d¹⁰", "\\[Kr\\]4s²3d⁵", "\\[Kr\\]4s¹3d⁵"], answer:1, explanation:"Ag استثناء مشابه لـ"},
+      {q:"التوزيع الإلكتروني لأيون الصوديوم Na⁺ (علماً أن Na = 11):", options:["1s²2s²2p⁶3s¹", "1s²2s²2p⁶", "1s²2s²2p⁶3s²", "1s²2s²2p⁵"], answer:1, explanation:"Na⁺ يفقد إلكترون 3s¹"},
+      {q:"التوزيع الإلكتروني الصحيح لأيون الكلور Cl⁻ (علماً أن Cl = 17):", options:["1s²2s²2p⁶3s²3p⁵", "1s²2s²2p⁶3s²3p⁶", "1s²2s²2p⁵3s²3p¹", "1s²2s²2p⁶3s¹3p⁵"], answer:1, explanation:"Cl⁻ يكتسب إلكتروناً:"},
+      {q:"عدد إلكترونات التكافؤ لعنصر النيتروجين ₇N:", options:["3", "5", "7", "9"], answer:1, explanation:"N = 1s²2s²2p³ → 5"},
+      {q:"رمز لويس لعنصر النيتروجين N في المجموعة 15:", options:["·N·", "·Ṅ·", "·Ñ·", "·N̈·"], answer:0, explanation:"النيتروجين له 5"},
+      {q:"التمثيل النقطي لعنصر تركيبه \[He\]2s²2p³:", options:["·H·", "·Ö·", "·Ṅ·", "·Ċ·"], answer:2, explanation:"\[He\]2s²2p³ ="},
+      {q:"عدد الأزواج غير المرتبطة في جزيء NH₃ (علماً أن N=7, H=1):", options:["1", "2", "3", "4"], answer:0, explanation:"NH₃ يحتوي على 3 روابط"},
+      {q:"إذا كان حول الذرة المركزية 4 أزواج إلكترونات و3 روابط، فالجزيء المتوقع:", options:["H₂O", "CH₄", "AlCl₃", "NH₃"], answer:3, explanation:"NH₃: 3 روابط + 1 زوج"},
+      {q:"أي المركبات تصل فيها ذرة الفوسفور لأكثر من 8 إلكترونات؟", options:["PH₃", "PCl₃", "PH₂", "PCl₅"], answer:3, explanation:"PCl₅ يحتوي على 10"},
+      {q:"الجدول الدوري الحديث يحوي:", options:["3 دورات و15 مجموعة", "6 دورات و17 مجموعة", "7 دورات و18 مجموعة", "5 دورات و16 مجموعة"], answer:2, explanation:"7 دورات و18 مجموعة."},
+      {q:"تُسمى عناصر المجموعة 1 في الجدول الدوري باسم:", options:["الفلزات القلوية", "الفلزات القلوية الأرضية", "الغازات النبيلة", "الهالوجينات"], answer:0, explanation:"المجموعة 1 = الفلزات"},
+      {q:"جميع عناصر المجموعة 1 فلزات عدا:", options:["الليثيوم", "الصوديوم", "الهيدروجين", "البوتاسيوم"], answer:2, explanation:"الهيدروجين لافلز رغم"},
+      {q:"عناصر المجموعات من 3 إلى 12 تُسمى:", options:["العناصر الممثلة", "العناصر الانتقالية الداخلية", "الفلزات القلوية", "العناصر الانتقالية"], answer:3, explanation:"المجموعات 3-12 ="},
+      {q:"عناصر تقع في الجزء العلوي الأيمن من الجدول الدوري ومعظمها غازات أو صلبة:", options:["الفلزات القلوية", "العناصر الانتقالية", "اللافلزات", "الفلزات القلوية الأرضية"], answer:2, explanation:"اللافلزات تقع في"},
+      {q:"تُسمى العناصر في المجموعة 17 باسم:", options:["العناصر القلوية", "العناصر القلوية الأرضية", "الغازات النبيلة", "الهالوجينات"], answer:3, explanation:"المجموعة 17 ="},
+      {q:"أي العناصر أكثر استقراراً وأقل نشاطاً كيميائياً؟", options:["₁₁Na", "₁₀Ne", "₈O", "₄Be"], answer:1, explanation:"النيون Ne غاز نبيل"},
+      {q:"ذرات العناصر ذات نشاط كيميائي خامل عدا:", options:["₂He", "₁₇Cl", "₁₀Ne", "₁₈Ar"], answer:1, explanation:"الكلور Cl من"}
+    ]
+  },
+  {
+    title: "اليوم الثالث",
+    topic: "القسم الثاني: نظريات الذرة والجدول الدوري (٢)",
+    icon: "📊",
+    color: "#ff9100",
+    subtopics: [
+      {name:"فئات وموقع العنصر في الجدول الدوري", count:4},
+      {name:"نصف القطر الذري وطاقة التأين والكهروسالبية", count:7}
+    ],
+    questions: [
+      {q:"الترميز الإلكتروني \[↑↓\|↑↓\|↑↓\|↑\] يعبر عن عنصر يقع في الدورة \_\_\_ في الجدول:", options:["الأولى", "الثانية", "الثالثة", "الرابعة"], answer:2, explanation:"أكبر مستوى رئيس = 3 →"},
+      {q:"أي الأعداد الذرية تُمثّل عنصراً في المجموعة الأولى؟", options:["5", "10", "11", "14"], answer:2, explanation:"₁₁Na = \[Ne\]3s¹ →"},
+      {q:"أين يقع عنصر عدده الذري 4؟", options:["المجموعة 1، الدورة 1", "المجموعة 2، الدورة 1", "المجموعة 2، الدورة 2", "المجموعة 1، الدورة 2"], answer:2, explanation:"₄Be = 1s²2s² → فئة s،"},
+      {q:"عنصر البروم ₃₅Br ينتمي إلى:", options:["الفلزات القلوية", "الفلزات الانتقالية", "الهالوجينات", "الغازات النبيلة"], answer:2, explanation:"البروم في المجموعة 17"},
+      {q:"أي العناصر التالية له أقصر نصف قطر؟", options:["₃Li", "₁₁Na", "₁₉K", "₃₇Rb"], answer:0, explanation:"Li أقل عدد ذري في"},
+      {q:"أي المجموعات الأقل في نصف القطر الذري؟", options:["13", "14", "15", "17"], answer:3, explanation:"المجموعة 17 الأقرب"},
+      {q:"الطاقة اللازمة لانتزاع إلكترون من ذرة في الحالة الغازية:", options:["طاقة التأين", "طاقة الحركة", "طاقة الوضع", "طاقة الرابطة"], answer:0, explanation:"تعريف طاقة التأين."},
+      {q:"أيّ التالي له أكبر طاقة تأين؟", options:["الهالوجينات", "الغازات النبيلة", "العناصر الممثلة", "العناصر الانتقالية"], answer:1, explanation:"الغازات النبيلة لها"},
+      {q:"مدى قابلية ذرات العناصر على جذب الإلكترونات في الرابطة:", options:["نصف قطر الذرة", "نصف قطر الأيون", "طاقة التأين", "الكهروسالبية"], answer:3, explanation:"تعريف الكهروسالبية."},
+      {q:"أكبر العناصر في الكهروسالبية:", options:["الكلور", "السيزيوم", "الفلور", "الحديد"], answer:2, explanation:"الفلور أكبر العناصر"},
+      {q:"التوزيع الإلكتروني للعنصر الأقل في الكهروسالبية:", options:["1s²2s²2p⁵", "1s²2s²2p⁴", "1s²2s²2p³", "1s²2s²2p²"], answer:3, explanation:"أقل إلكترونات في"}
+    ]
+  },
+  {
+    title: "اليوم الرابع",
+    topic: "القسم الثالث: قوى التشتت والروابط الهيدروجينية",
+    icon: "🔗",
+    color: "#ff4081",
+    subtopics: [
+      {name:"قوى التشتت (لندن) وثنائية القطبية", count:9},
+      {name:"الروابط الهيدروجينية", count:11}
+    ],
+    questions: [
+      {q:"الرابطة الأيونية بين ذرتين مقارنة بالروابط الكيميائية الأخرى تكون:", options:["أضعف من الرابطة التساهمية", "أضعف من الرابطة الهيدروجينية", "رابطة قطبية", "أقوى من الرابطة التساهمية"], answer:3, explanation:"الرابطة الأيونية أقوى"},
+      {q:"أي التالي يُعد من قوى الترابط الجزيئية؟", options:["قوى التلاصق", "الرابطة التساهمية", "قوى ثنائية القطبية", "قوى التشتت"], answer:1, explanation:"الرابطة التساهمية من"},
+      {q:"أي التالي ليس من القوى بين الجزيئية؟", options:["قوى التلاصق", "قوى ثنائية القطبية", "الروابط الهيدروجينية", "قوى التشتت"], answer:0, explanation:"قوى التلاصق ليست من"},
+      {q:"قوى الترابط بين جزيئات الأكسجين:", options:["قوى ثنائية القطبية", "الرابطة الأيونية", "الرابطة الهيدروجينية", "قوى التشتت"], answer:3, explanation:"O₂ جزيء غير قطبي →"},
+      {q:"أي الجزيئات التالية لا يرتبط بقوى التشتت؟", options:["CH₄", "O₂", "H₂O", "I₂"], answer:2, explanation:"H₂O قطبي يرتبط بروابط"},
+      {q:"قوى التشتت \_\_\_ بزيادة عدد الإلكترونات في السحب الإلكترونية:", options:["تعدم", "تنقص", "لا تتغير", "تزيد"], answer:3, explanation:"قوى التشتت تزيد بزيادة"},
+      {q:"قوى التشتت تزيد بزيادة الحجم الذري، فأي العناصر التالية قوى تشتته أكبر؟", options:["F", "Cl", "Br", "I"], answer:3, explanation:"I أكبر حجماً ذرياً →"},
+      {q:"قوى تجاذب بين مناطق مختلفة الشحنة في الجزيئات القطبية:", options:["قوى ثنائية القطب", "الرابطة الهيدروجينية", "قوى التشتت", "الرابطة الأيونية"], answer:0, explanation:"تعريف قوى ثنائية"},
+      {q:"أي التالي يرتبط بقوى ثنائية القطبية؟", options:["HCl", "CH₄", "O₂", "F₂"], answer:0, explanation:"HCl جزيء قطبي يرتبط"},
+      {q:"في الشكل (O-H···O)، نوع الرابطة المشار إليها:", options:["هيدروجينية", "أيونية", "تساهمية", "فلزية"], answer:0, explanation:"الرابطة بين O-H···O"},
+      {q:"يوجد الماء في الحالة السائلة عند درجة حرارة الغرفة بسبب:", options:["الروابط التساهمية", "الروابط الفلزية", "الروابط الأيونية", "الروابط الهيدروجينية"], answer:3, explanation:"الروابط الهيدروجينية"},
+      {q:"أي التالي يُكوّن روابط هيدروجينية بين جزيئاته؟", options:["NH₃", "Cl₂", "NaOH", "CH₄"], answer:0, explanation:"NH₃ يحتوي H مرتبط بـ"},
+      {q:"أي الجزيئات التالية قطبي؟", options:["H₂O", "Cl₂", "CO₂", "CH₄"], answer:0, explanation:"H₂O جزيء قطبي بسبب"},
+      {q:"أي التالي يُعد أقوى أنواع الروابط بين الجزيئات؟", options:["ثنائية القطبية", "الرابطة الهيدروجينية", "قوى لندن", "الرابطة الفلزية"], answer:1, explanation:"الرابطة الهيدروجينية"},
+      {q:"أي الروابط التالية الأكثر قطبية؟", options:["C-H", "O-H", "N-H", "Si-H"], answer:1, explanation:"O-H الأكثر قطبية لأن"},
+      {q:"أيّ الجزيئات التالية قطبي؟", options:["Br₂", "CCl₄", "CH₃CH₃", "HCl"], answer:3, explanation:"HCl قطبي (فرق"},
+      {q:"أي المركبات التالية يحوي روابط هيدروجينية أقوى بين جزيئاته؟", options:["NH₃", "H₂O", "CH₄", "HCl"], answer:1, explanation:"H₂O أقوى لأن O أكثر **◼ الكهروسالبية والقطبية والشبكة"},
+      {q:"أي المركبات التالية أعلى قطبية؟", options:["H₂O", "NH₃", "CH₃CH₃", "CH₄"], answer:0, explanation:"H₂O أعلى قطبية."},
+      {q:"أي المركبات التالية غير قطبي؟", options:["HCl", "CH₄", "H₂O", "NH₃"], answer:1, explanation:"CH₄ رباعي الأوجه"},
+      {q:"أي التالي لا يُكوّن رابطة هيدروجينية؟", options:["الميثان", "الماء", "الأمونيا", "فلوريد الهيدروجين"], answer:0, explanation:"الميثان لا يحتوي H"}
+    ]
+  },
+  {
+    title: "اليوم الخامس",
+    topic: "القسم الثالث: تكوّن الأيون والرابطة الأيونية",
+    icon: "⚡",
+    color: "#ffd600",
+    subtopics: [
+      {name:"تكوّن الأيون والرابطة الأيونية", count:26}
+    ],
+    questions: [
+      {q:"بعض المواد تُصبح ذات شحنة موجبة لأنها:", options:["فقدت إلكترونات", "اكتسبت إلكترونات", "فقدت بروتونات", "اكتسبت بروتونات"], answer:0, explanation:"فقد إلكترونات = شحنة"},
+      {q:"يتكون الأيون السالب في حالة:", options:["اكتساب الإلكترونات", "فقد الإلكترونات", "المساهمة بإلكترونات", "الإلكترونات الحرة"], answer:0, explanation:"اكتساب إلكترونات ="},
+      {q:"الشحنة الكلية لمركب Na₂CO₃:", options:["0", "-2", "+2", "+4"], answer:0, explanation:"المركب المتعادل شحنته"},
+      {q:"أيون الفلز شحنته تساوي عدد إلكترونات:", options:["جميع مستوياته", "المستوى الأول", "المستوى الثاني", "تكافؤه"], answer:3, explanation:"شحنة أيون الفلز = عدد"},
+      {q:"أي التالي صحيح لأيون الألومنيوم ₁₃Al؟", options:["Al³⁺", "Al³⁻", "Al²⁻", "Al⁺"], answer:0, explanation:"Al يفقد 3 إلكترونات →"},
+      {q:"ما عدد إلكترونات أيون البوتاسيوم K⁺ (علماً أن K = 19)؟", options:["21", "20", "19", "18"], answer:3, explanation:"K⁺ فقد إلكتروناً: 19-1"},
+      {q:"يشبه التوزيع الإلكتروني للكالسيوم ₂₀Ca التوزيع للغاز النبيل عندما:", options:["يكتسب e⁻", "يفقد e⁻", "يكتسب 2e⁻", "يفقد 2e⁻"], answer:3, explanation:"Ca يفقد 2 إلكترون"},
+      {q:"العنصر الذي يكافئ أيون الكلوريد Cl⁻:", options:["Mg", "Ca", "Ar", "Al"], answer:2, explanation:"Cl⁻ = 18 إلكتروناً ="},
+      {q:"عند اتحاد أيون صوديوم مع أيون كلور لتكوين NaCl فإن ذرة الكلور:", options:["تفقد إلكتروناً", "تكتسب إلكتروناً", "تفقد إلكترونين", "تكتسب إلكترونين"], answer:1, explanation:"الكلور يكتسب إلكتروناً"},
+      {q:"أي عناصر المجموعات التالية لها القدرة على تكوين أيون سالب؟", options:["1", "2", "17", "18"], answer:2, explanation:"المجموعة 17 لافلزات"},
+      {q:"أي العناصر التالية لديه القدرة على إنتاج أيون سالب؟", options:["اللافلزات", "الفلزات", "الفلزات القلوية", "الغازات النبيلة"], answer:0, explanation:"اللافلزات تكتسب"},
+      {q:"القوة الكهروستاتيكية التي تجذب الأيونات ذات الشحنات المختلفة:", options:["الرابطة التساهمية", "الرابطة الأيونية", "الرابطة الفلزية", "الرابطة التناسقية"], answer:1, explanation:"تعريف الرابطة"},
+      {q:"عنصر يقع في المجموعة 2 اتحد مع عنصر من المجموعة 16، نوع الرابطة:", options:["تساهمية", "تناسقية", "أيونية", "فلزية"], answer:2, explanation:"فلز (مجموعة 2) +"},
+      {q:"أي المجموعات التالية تميل إلى اكتساب الإلكترونات لتكوين الرابطة الأيونية؟", options:["1", "2", "17", "18"], answer:2, explanation:"المجموعة 17 تميل"},
+      {q:"أي المركبات التالية يحوي رابطة أيونية؟", options:["CaCO₃", "NH₃", "CH₄", "CO₂"], answer:0, explanation:"CaCO₃ مركب أيوني"},
+      {q:"نوع الرابطة في جزيء كلوريد الصوديوم NaCl (Na=11, Cl=17):", options:["أيونية", "تساهمية", "فلزية", "هيدروجينية"], answer:0, explanation:"Na فلز + Cl لافلز →"},
+      {q:"أيون ClO₃⁻ يُسمى:", options:["البركلورات", "الهيبوكلورايت", "الكلورات", "الكلورايت"], answer:2, explanation:"ClO₃⁻ = الكلورات."},
+      {q:"أيون ClO₄⁻ يُسمى:", options:["البركلورات", "الهيبوكلورايت", "الكلورات", "الكلورايت"], answer:0, explanation:"ClO₄⁻ = البركلورات."},
+      {q:"إذا كان عدد تأكسد عنصر Y = -3 وعنصر X = +2 فإن صيغة المركب:", options:["Y₂X₃", "X₃Y₂", "X₂Y₃", "Y₃X₂"], answer:2, explanation:"نتبادل الأعداد: X₂Y₃."},
+      {q:"الصيغة الكيميائية لأكسيد الماغنسيوم:", options:["Mg₂O₂", "MgO", "Mg₂O", "MgO₂"], answer:1, explanation:"Mg²⁺ + O²⁻ → MgO."},
+      {q:"الصيغة الكيميائية لملح الطعام:", options:["NaCl", "NaF", "KI", "AlF₃"], answer:0, explanation:"ملح الطعام = كلوريد"},
+      {q:"يتكوّن الطباشير من:", options:["كربونات الماغنسيوم", "كربونات الصوديوم", "كربونات البوتاسيوم", "كربونات الكالسيوم"], answer:3, explanation:"الطباشير = كربونات"},
+      {q:"الصيغة الكيميائية لنترات الماغنسيوم:", options:["MgNO₃", "MgSO₄", "Mg(NO₃)₂", "MgCO₃"], answer:2, explanation:"Mg²⁺ مع NO₃⁻ →"},
+      {q:"الصيغة الكيميائية الناتجة عن اتحاد CO₃²⁻ مع الصوديوم:", options:["NaCO₃", "Na₂(CO₃)₂", "Na₂CO₂", "Na₂CO₃"], answer:3, explanation:"Na⁺₂ + CO₃²⁻ →"},
+      {q:"الصيغة الكيميائية للمركب الأيوني من أيوني الصوديوم والنيتريت:", options:["NaNO₂", "Na₂NO₂", "NaNO₃", "NaNO₃"], answer:0, explanation:"Na⁺ + NO₂⁻ → NaNO₂."},
+      {q:"الاسم الكيميائي للمركب الأيوني (NH₄)₃PO₄:", options:["أسيتات الأمونيوم", "كربونات الأمونيوم", "فوسفات الأمونيوم", "كبريتات الأمونيوم"], answer:2, explanation:"NH₄⁺ مع PO₄³⁻ ="}
+    ]
+  },
+  {
+    title: "اليوم السادس",
+    topic: "القسم الثالث: الرابطة الفلزية والتساهمية",
+    icon: "🔬",
+    color: "#00e676",
+    subtopics: [
+      {name:"الرابطة الفلزية والتساهمية", count:17}
+    ],
+    questions: [
+      {q:"الروابط الفلزية تتكون بين الأيونات الموجبة و\_\_\_ في الشبكة الفلزية:", options:["الإلكترونات الحرة", "النيترونات الحرة", "البروتونات الحرة", "الأيونات الحرة"], answer:0, explanation:"الرابطة الفلزية بين"},
+      {q:"تتداخل فيها مستويات الطاقة في نموذج يُسمى بحر الإلكترونات:", options:["الرابطة الأيونية", "الرابطة الفلزية", "الرابطة التساهمية", "الرابطة التناسقية"], answer:1, explanation:"نموذج بحر الإلكترونات"},
+      {q:"كلما كان مقدار الشحنة على الأيون أكبر زادت قوة الرابطة:", options:["الفلزية", "الأيونية", "التساهمية", "الهيدروجينية"], answer:0, explanation:"زيادة شحنة الأيون"},
+      {q:"نوع الرابطة المتكونة بين ذرتي الهيدروجين:", options:["معدنية", "أيونية", "هيدروجينية", "تساهمية"], answer:3, explanation:"H-H رابطة تساهمية."},
+      {q:"عامل مؤثر على قوة الرابطة التساهمية في جزيء:", options:["طول الرابطة", "شكل الجزيء", "قطبية الرابطة", "نوع الجزيء"], answer:0, explanation:"طول الرابطة يؤثر على"},
+      {q:"أي الجزيئات التالية يحوي رابطة ثنائية (علماً أن H=1, O=8, N=7, I=53):", options:["N₂", "H₂", "I₂", "O₂"], answer:3, explanation:"O₂ يحوي رابطة ثنائية"},
+      {q:"عنصر يقع بالمجموعة 15 يستطيع تكوين رابطة تساهمية:", options:["أحادية", "ثنائية", "ثلاثية", "رباعية"], answer:2, explanation:"عنصر النيتروجين N من"},
+      {q:"أي التالي يحوي رابطة تساهمية؟", options:["NaCl", "KBr", "MgCl₂", "CH₄"], answer:3, explanation:"CH₄ مركب تساهمي."},
+      {q:"أي الجزيئات التالية يحوي أقوى رابطة تساهمية؟", options:["O₂", "Cl₂", "N₂", "F₂"], answer:2, explanation:"N≡N رابطة ثلاثية ="},
+      {q:"الرابطة سيجما تتكوّن من تداخل مستويات التكافؤ الفرعية:", options:["رأسياً", "أفقياً", "المتوازية", "بالجنب"], answer:0, explanation:"سيجما = تداخل رأسي"},
+      {q:"نوع الرابطة في جزيء الهيدروكلوريك HCl (H=1, Cl=17):", options:["تساهمية", "أيونية", "فلزية", "هيدروجينية"], answer:0, explanation:"HCl رابطة تساهمية"},
+      {q:"الرابطة التساهمية بين ذرتي فلور تنتج بمشاركة كل ذرة بعدد \_\_\_ إلكترون (علماً أن F=9):", options:["1", "2", "3", "4"], answer:0, explanation:"كل ذرة فلور تشارك"},
+      {q:"أي العناصر التالية تُكوّن ذرته روابط تساهمية عند تفاعلها مع الذرات الأخرى (Al=13, Mg=12, Na=11, C=6):", options:["Na", "C", "Mg", "Al"], answer:1, explanation:"الكربون C لافلز يُكوّن"},
+      {q:"الرابطة الثنائية بين ذرتي الكربون في جزيء الإيثين:", options:["رابطة سيجما فقط", "اثنتين سيجما", "اثنتين باي", "واحدة سيجما وواحدة باي"], answer:3, explanation:"الرابطة الثنائية ="},
+      {q:"عدد الروابط سيجما والروابط باي في الأسيتيلين H-C≡C-H:", options:["ثلاث سيجما ورابطتان باي", "رابطة سيجما وثلاث روابط باي", "رابطتان سيجما ورابطة باي", "رابطة سيجما وأربع روابط باي"], answer:0, explanation:"H-C≡C-H: 3 سيجما"},
+      {q:"الصيغة الكيميائية لمركب أكسيد ثنائي الهيدروجين:", options:["H₂O", "H₃O", "2HO", "OH"], answer:0, explanation:"أكسيد ثنائي"},
+      {q:"الصيغة الكيميائية لحمض النيتريك:", options:["HNO₃", "HNO₂", "HCl", "H₂O"], answer:0, explanation:"حمض النيتريك = HNO₃."}
+    ]
+  },
+  {
+    title: "اليوم السابع",
+    topic: "القسم الثالث: الكهروسالبية والقطبية والتهجين",
+    icon: "💎",
+    color: "#e040fb",
+    subtopics: [
+      {name:"الكهروسالبية والقطبية والشبكة البلورية والتهجين", count:29}
+    ],
+    questions: [
+      {q:"ما نوع الرابطة في BF₄⁻؟", options:["تساهمية تناسقية", "تساهمية ثنائية", "تساهمية ثلاثية", "أيونية"], answer:0, explanation:"BF₄⁻ يحوي رابطة"},
+      {q:"نوع الرابطة بين العنصرين xy في المركب إذا كانت قيمة الكهروسالبية x=0.13, y=3.12:", options:["أيونية", "تساهمية قطبية", "تساهمية", "تساهمية غير قطبية"], answer:0, explanation:"الفرق = 3.12 - 0.13 ="},
+      {q:"إذا كانت قيمة كهروسالبية العنصر y=1.3 والعنصر x=0.39 فنوع الرابطة:", options:["أيونية غالباً", "تساهمية قطبية", "تساهمية غالباً", "تساهمية غير قطبية"], answer:2, explanation:"الفرق = 0.91 → بين"},
+      {q:"إذا كان فرق الكهروسالبية بين ذرتي الرابطة صفراً فإن المركب:", options:["تساهمي قطبي", "أيوني", "تساهمي غير قطبي", "يُكوّن رابطة هيدروجينية"], answer:2, explanation:"فرق = 0 → تساهمية غير"},
+      {q:"لعدم جذب الذرات لإلكترونات الرابطة المشتركة بنفس القوة تتكوّن:", options:["رابطة تساهمية نقية", "رابطة أيونية", "رابطة تساهمية قطبية", "رابطة تساهمية غير قطبية"], answer:2, explanation:"اختلاف الجذب → رابطة"},
+      {q:"نوع الرابطة في HCl:", options:["تساهمية قطبية", "تساهمية غير قطبية", "أيونية", "فلزية"], answer:0, explanation:"HCl تساهمية قطبية"},
+      {q:"أي الجزيئات التالية يحوي رابطة تساهمية قطبية؟", options:["F-F", "K-F", "H-F", "Na-F"], answer:2, explanation:"H-F فرق الكهروسالبية"},
+      {q:"أي الخواص التالية يرتبط بالجزيئات القطبية؟", options:["لا تحوي شحنات جزئية", "روابطها أيونية", "تنجذب للمجال الكهربائي", "روابطها تناسقية"], answer:2, explanation:"الجزيئات القطبية"},
+      {q:"جزيء الكلور ترتبط فيه ذرتا الكلور برابطة:", options:["تساهمية قطبية", "أيونية", "تساهمية غير قطبية", "تناسقية"], answer:2, explanation:"Cl-Cl فرق"},
+      {q:"أي التالي يُعد من الروابط غير القطبية؟", options:["H-Cl", "H-F", "F-F", "O-H"], answer:2, explanation:"F-F ذرتان متشابهتان →"},
+      {q:"جميع الجزيئات التالية تحوي رابطة تساهمية غير قطبية عدا:", options:["H₂", "H₂O", "O₂", "F₂"], answer:1, explanation:"H₂O يحوي رابطة O-H"},
+      {q:"يُصنف المركب CF₄ أنه:", options:["قطبي متماثل", "أيوني", "قطبي غير متماثل", "غير قطبي متماثل"], answer:3, explanation:"CF₄ رباعي الأوجه"},
+      {q:"الزيوت تذوب في المذيبات التالية عدا:", options:["الكحول", "الإيثر", "الماء", "البنزين"], answer:2, explanation:"الزيوت مركبات غير"},
+      {q:"المصطلح العلمي الذي يُمثّل ترتيباً هندسياً للجسيمات ثلاثي الأبعاد:", options:["البناء الفيزيائي", "الشبكة البلورية", "الرابطة الأيونية", "الرابطة الفلزية"], answer:1, explanation:"الشبكة البلورية ="},
+      {q:"طاقة الشبكة البلورية لـ CaCl₂ أكبر من KCl بسبب:", options:["شحنة أيون Ca أكبر من K", "شحنة أيون K أكبر من Ca", "حجم أيون Cl أكبر من Ca", "حجم أيون K أكبر من Ca"], answer:0, explanation:"Ca²⁺ شحنته +2 أكبر من"},
+      {q:"المركب الأعلى طاقة شبكة بلورية:", options:["KF", "MgO", "AgCl", "LiF"], answer:1, explanation:"MgO: شحنة +2/-2 وحجم"},
+      {q:"مادة ذراتها مرتبة في بناء هندسي منتظم:", options:["المخلوط الغروي", "المخلوط المعلق", "المادة الصلبة البلورية", "المادة الصلبة غير البلورية"], answer:2, explanation:"المادة الصلبة"},
+      {q:"السكر من المواد البلورية الصلبة:", options:["الأيونية", "الذرية", "الجزيئية", "الفلزية"], answer:2, explanation:"السكر مادة بلورية"},
+      {q:"الألماس أحد الأشكال التآصلية لعنصر:", options:["الذهب", "الكربون", "النحاس", "الفضة"], answer:1, explanation:"الألماس شكل تآصلي"},
+      {q:"عملية خلط المجالات الفرعية لتكوين مجالات جديدة:", options:["التهجين", "التأين", "التشبع", "الأكسدة"], answer:0, explanation:"تعريف التهجين."},
+      {q:"شكل تهجين sp:", options:["180°", "120°", "109.5°", "104.5°"], answer:0, explanation:"sp = خطي بزاوية 180°."},
+      {q:"نوع التهجين في الجزيء N₂O:", options:["sp", "sp²", "sp³", "sp³d"], answer:0, explanation:"N₂O جزيء خطي → تهجين"},
+      {q:"التهجين sp²:", options:["مثلث هرمي", "ثماني الأوجه منتظم", "رباعي الأوجه منتظم", "مثلث مستوٍ"], answer:3, explanation:"sp² = مثلث مستوٍ"},
+      {q:"ما نوع التهجين في جزيء AlCl₃؟", options:["sp", "sp²", "sp³", "sp³d"], answer:2, explanation:"AlCl₃ تهجين sp² (مثلث"},
+      {q:"نوع التهجين في جزيء الميثان CH₄:", options:["sp³d", "sp²", "sp³", "sp"], answer:2, explanation:"CH₄ = 4 روابط سيجما →"},
+      {q:"نوع التهجين في جزيء H₂O:", options:["sp²", "sp³d²", "sp²d", "sp³"], answer:3, explanation:"H₂O = 2 روابط + 2"},
+      {q:"جزيء الماء شكله:", options:["رباعي الأوجه منتظم", "منحنٍ", "مثلث مستوٍ", "خطي"], answer:1, explanation:"H₂O شكله منحنٍ (بزاوية"},
+      {q:"نوع التهجين في جزيء PH₃:", options:["sp²", "sp³d²", "sp³", "sp³d"], answer:2, explanation:"PH₃ = 3 روابط + زوج"},
+      {q:"ما شكل جزيء NH₃ (علماً أن N=7, H=1):", options:["ثماني", "متماثل", "رباعي", "مثلث هرمي"], answer:3, explanation:"NH₃ = مثلث هرمي (3"}
+    ]
+  },
+  {
+    title: "اليوم الثامن",
+    topic: "القسم الرابع: المول والتركيب النسبي",
+    icon: "🔢",
+    color: "#00b0ff",
+    subtopics: [
+      {name:"المول والكتلة المولية", count:9},
+      {name:"التركيب النسبي المئوي والصيغة الأولية والجزيئية", count:17}
+    ],
+    questions: [
+      {q:"عدد الذرات الموجودة في مول واحد من الصوديوم ₁₁Na مقارنة بمول واحد من الألومنيوم ₁₃Al يكون:", options:["متساوياً في كليهما", "الصوديوم أقل من الألومنيوم", "الألومنيوم أقل من الصوديوم", "لا يمكن المقارنة بينهما"], answer:0, explanation:"كل مول من أي مادة يحوي"},
+      {q:"عدد أفوجادرو يساوي:", options:["6.02×10²³", "60.2×10²³", "6.02×10²⁴", "60.2×10²⁴"], answer:0, explanation:"عدد أفوجادرو ="},
+      {q:"أي المركبات التالية أقل كتلة مولية (علماً أن O=16, H=1, C=12):", options:["CO", "CO₂", "H₂O", "H₂O₂"], answer:2, explanation:"H₂O = 18 g/mol وهي"},
+      {q:"احسب كتلة 0.5 mol من الأمونيا NH₃ إذا علمت أن H=1, N=14:", options:["7.5 g", "8.5 g", "17 g", "34 g"], answer:1, explanation:"الكتلة المولية = 17."},
+      {q:"في المعادلة 2H₂O(l) → 2H₂(g) + O₂(g) كم جراماً من الأكسجين ينتج عند تحليل 3 mol من الماء (الكتلة المولية للأكسجين 16 g/mol):", options:["16 g", "24 g", "32 g", "48 g"], answer:1, explanation:"3 mol ماء → 1.5 mol"},
+      {q:"في المعادلة N₂(g) + 3H₂(g) → 2NH₃(g) ما كتلة الهيدروجين اللازمة للتفاعل مع 1 mol من النيتروجين (علماً أن H=1, N=14):", options:["1 g", "2 g", "6 g", "12 g"], answer:2, explanation:"1 mol N₂ يحتاج 3 mol"},
+      {q:"ما كتلة KOH في المعادلة 2K(s) + 2H₂O(l) → 2KOH(aq) + H₂(g) (علماً أن كتلة الماء 4.5 g والكتل الذرية K=39, H=1, O=16):", options:["7 g", "14 g", "21 g", "28 g"], answer:1, explanation:"4.5 g ماء = 0.25 mol."},
+      {q:"إذا كانت كتلة 0.5 mol من CO₂ تساوي 22 g، فكم كتلة الكربون في مول واحد من CO₂ (علماً أن O=16):", options:["8", "12", "16", "32"], answer:1, explanation:"كتلة مول CO₂ = 44."},
+      {q:"احسب عدد مولات 20 g من NaOH (علماً أن الكتل الذرية Na=23, O=16, H=1):", options:["0.25 mol", "0.5 mol", "0.75 mol", "1.0 mol"], answer:1, explanation:"الكتلة المولية = 40."},
+      {q:"ما عدد المولات الموجودة في 36 g من الماء (علماً أن الكتلة الذرية O=16, H=1):", options:["0.5 mol", "2 mol", "18 mol", "38 mol"], answer:1, explanation:"الكتلة المولية = 18. **◼ الحسابات المتعلقة بالغازات"},
+      {q:"إذا كانت كتلة الهيدروجين 400 g وكتلته الذرية 1 g/mol فإن عدد مولاته بوحدة المول:", options:["401", "400", "399", "200"], answer:1, explanation:"H₂ الكتلة المولية ="},
+      {q:"في المعادلة 2H₂SO₄(aq) ← 2H₂O(l) + O₂(g) + 2SO₂(g) ما عدد مولات H₂SO₄ الناتجة من 12.5 mol من SO₂:", options:["12.5 mol", "25 mol", "15 mol", "7.5 mol"], answer:0, explanation:"النسبة 1:1 بين SO₂ و"},
+      {q:"حسب المعادلة 2NH₃(g) ← N₂(g) + 3H₂(g) كم عدد مولات الهيدروجين الناتجة عن تفكك 5 mol من الأمونيا:", options:["3 mol", "5 mol", "6 mol", "7.5 mol"], answer:3, explanation:"2 mol NH₃ → 3 mol H₂."},
+      {q:"عينة من مركب كيميائي صيغته AB تحوي 20 g من المادة A و30 g من المادة B، النسبة المئوية لكتلة B في المركب:", options:["60%", "40%", "30%", "20%"], answer:0, explanation:"كتلة المركب = 50 g."},
+      {q:"عينة من أكسيد الماغنسيوم MgO كتلتها 20 g، كم نسبة الأكسجين إذا كانت كتلة الماغنسيوم 12 g:", options:["40%", "45%", "55%", "60%"], answer:0, explanation:"كتلة O = 20 - 12 = 8"},
+      {q:"عند تحليل 20 g من الماء في جهاز التحليل نتج 60% أكسجين، ما كتلة الهيدروجين الناتجة:", options:["8 g", "9 g", "10 g", "12 g"], answer:0, explanation:"الهيدروجين = 40% من"},
+      {q:"أبسط نسبة عددية صحيحة لعدد مولات العناصر بالمركب:", options:["الصيغة الجزيئية", "الصيغة الأولية", "الصيغة البنائية", "الصيغة العددية"], answer:1, explanation:"تعريف الصيغة الأولية."},
+      {q:"الصيغة التي تحدد العدد الفعلي للذرات في المركب:", options:["الجزيئية", "الفرضية", "الأولية", "النظرية"], answer:0, explanation:"الصيغة الجزيئية تُعطي"},
+      {q:"مركبان: الأول CH₃-C-H والثاني C₃H₇-COOH متشابهان في:", options:["الصيغة الأولية", "الصيغة الجزيئية", "الكتلة المولية", "الخواص الكيميائية"], answer:0, explanation:"كلاهما نسبة C:H:O"},
+      {q:"الصيغة الأولية لجزيء الجلوكوز C₆H₁₂O₆ هي:", options:["C₆H₁₂O₆", "CH₂O", "C₃H₆O₃", "CHO"], answer:1, explanation:"نبسّط 6:12:6 → 1:2:1 ="},
+      {q:"جزيء ماء عدد مولاته 14 mol وأكسيد ماغنسيوم عدد مولاته 2 mol، ما الصيغة الجزيئية للمركب:", options:["MgO·2H₂O", "MgO·7H₂O", "2MgO·14H₂O", "MgO·H₂O"], answer:1, explanation:"النسبة = 14:2 = 7:1 →"},
+      {q:"إذا كانت الكتلة المولية لمركب تساوي 28 g/mol والصيغة الأولية له CH₂ ما صيغته الجزيئية (علماً أن C=12, H=1):", options:["C₂H₄", "CH₂", "C₃H₆", "C₃H₈"], answer:0, explanation:"كتلة CH₂ = 14. ن ="},
+      {q:"الاسم العلمي للمركب MgSO₄·7H₂O:", options:["كبريتيد الماغنسيوم سباعية الماء", "كبريتات الماغنسيوم سباعية الماء", "كبريت الماغنسيوم المائي", "كبريتيت الماغنسيوم سباعية الماء"], answer:1, explanation:"MgSO₄·7H₂O = كبريتات"},
+      {q:"أي التالي يُمثّل الملح المائي؟", options:["يحوي ماء التبلور", "لا يختلف عدد جزيئات الماء من ملح لآخر", "لا يحوي ماء التبلور", "يمكن تسخينه لزيادة جزيئات الماء"], answer:0, explanation:"الملح المائي يحوي ماء"},
+      {q:"ما كتلة الماء بالجرام في عينة من ملح مائي كتلتها 10 g ثم تسخينها حتى تغير لونها وأصبحت كتلتها 9.2 g:", options:["0.8", "8", "9.2", "10"], answer:0, explanation:"كتلة الماء المفقود ="},
+      {q:"مركبات تُستخدم في امتصاص الرطوبة الجوية:", options:["الأحماض", "الأملاح المعدنية", "القواعد", "الأملاح اللامائية"], answer:3, explanation:"الأملاح اللامائية"}
+    ]
+  },
+  {
+    title: "اليوم التاسع",
+    topic: "القسم الرابع: قوانين الغازات",
+    icon: "💨",
+    color: "#ff6d00",
+    subtopics: [
+      {name:"قوانين الغازات", count:29}
+    ],
+    questions: [
+      {q:"«عند ثبات درجة الحرارة يتناسب حجم الغاز عكسياً مع ضغطه» يُعبر عن قانون:", options:["بويل", "شارل", "نيوتن", "كلفن"], answer:0, explanation:"تعريف قانون بويل."},
+      {q:"أي التالي يُمثّل العلاقة البيانية بين حجم الغاز وضغطه عند ثبوت درجة حرارته (منحنى هبوطي):", options:["منحنى تصاعدي", "منحنى هبوطي", "خط مستقيم صاعد", "خط أفقي"], answer:1, explanation:"علاقة عكسية → منحنى"},
+      {q:"غاز حجمه 70 cm³ عند ضغط 100 Pa، ما حجمه عند ضغط 200 Pa بنفس درجة الحرارة:", options:["15", "35", "140", "210"], answer:1, explanation:"P₁V₁ = P₂V₂ → 100×70"},
+      {q:"ماذا يحدث لحجم عينة غاز عند زيادة الضغط عليها وفقاً لقانون بويل:", options:["يزداد", "يقل", "يظل ثابتاً", "حجمه يساوي صفراً"], answer:1, explanation:"بويل: زيادة الضغط →"},
+      {q:"إذا كانت درجة الحرارة على المقياس المئوي 50°C فإن درجة الحرارة المطلقة بوحدة الكلفن:", options:["18", "82", "223", "323"], answer:3, explanation:"Tₖ = 50 + 273 = 323"},
+      {q:"درجة الحرارة 100 K تُعادل في تدريج سليزيوس:", options:["373°C", "173°C", "-173°C", "-373°C"], answer:2, explanation:"T꜀ = 100 - 273 ="},
+      {q:"درجة غليان الماء في مقياس كلفن:", options:["0 K", "100 K", "273 K", "373 K"], answer:3, explanation:"100°C + 273 = 373 K."},
+      {q:"درجة الحرارة على مقياس كلفن التي تقابل 30°C:", options:["373 K", "323 K", "313 K", "303 K"], answer:3, explanation:"30 + 273 = 303 K."},
+      {q:"أي تحويلات درجات الحرارة التالية غير صحيح:", options:["88 K = -185°C", "-273°C = 0 K", "273°C = 546 K", "300 K = 361°C"], answer:3, explanation:"300 K = 300 - 273 ="},
+      {q:"«عند ثبوت الضغط يتناسب حجم الغاز طردياً مع درجة حرارته» يُعبر عن قانون:", options:["بويل", "جاي لوساك", "شارل", "دالتون"], answer:2, explanation:"قانون شارل."},
+      {q:"قانون شارل من قوانين الغازات الذي يدرس العلاقة بين:", options:["الضغط ودرجة الحرارة", "درجة الحرارة والحجم", "الضغط والحجم", "الضغط وعدد المولات"], answer:1, explanation:"شارل يدرس العلاقة بين"},
+      {q:"عند ثبوت الضغط فإن حجم الغاز يزيد طردياً في حالة:", options:["نقص حجم الوعاء", "نقص درجة الحرارة", "زيادة حجم الوعاء", "زيادة درجة الحرارة"], answer:3, explanation:"شارل: زيادة الحرارة →"},
+      {q:"أي التالي يُمثّل العلاقة البيانية بين حجم غاز ودرجة حرارته عند ثبوت الضغط (خط مستقيم صاعد):", options:["خط مستقيم صاعد", "منحنى هبوطي", "خط أفقي", "منحنى تصاعدي"], answer:0, explanation:"علاقة طردية → خط"},
+      {q:"بالون مملوء بغاز حجمه 2 L عند 300 K، كم حجمه بالليتر عند 150 K:", options:["1", "2", "3", "4"], answer:0, explanation:"V₁/T₁ = V₂/T₂ → 2/300"},
+      {q:"يشغل غاز حجماً مقداره 1 L عند درجة حرارة 100 K، ما درجة الحرارة اللازمة لخفض الحجم إلى 0.5 L:", options:["50 K", "100 K", "150 K", "200 K"], answer:0, explanation:"V₁/T₁ = V₂/T₂ → 1/100"},
+      {q:"غاز حجمه 3 L ودرجة حرارته 300 K تقلص حجمه إلى 2 L، فكم تُصبح درجة حرارته:", options:["200 K", "300 K", "450 K", "600 K"], answer:0, explanation:"V₁/T₁ = V₂/T₂ → 3/300"},
+      {q:"درجة الصفر المطلق في مقياس كلفن تُعادل في تدريج سليزيوس:", options:["-273°C", "-32°C", "212°C", "373°C"], answer:0, explanation:"0 K = -273°C."},
+      {q:"تتلاشى الفراغات بين ذرات غاز الهيليوم عند درجة حرارة:", options:["تجمد الماء", "النقط الحرجة", "الصفر المطلق", "تجمد الغاز"], answer:2, explanation:"عند الصفر المطلق"},
+      {q:"ما درجة الحرارة التي تنعدم عندها المسافات بين الجزيئات:", options:["الصفر المطلق", "قانون بويل", "قانون شارل", "قانون جاي لوساك"], answer:0, explanation:"الصفر المطلق = انعدام"},
+      {q:"يتناسب ضغط الغاز طردياً مع درجة حرارته عند ثبوت الحجم:", options:["قانون شارل", "قانون بويل", "قانون جاي لوساك", "القانون العام للغازات"], answer:2, explanation:"قانون جاي لوساك."},
+      {q:"أي العلاقات البيانية التالية يُعبّر عن قانون جاي لوساك (خط مستقيم صاعد P vs T):", options:["خط مستقيم صاعد", "منحنى هبوطي", "خط أفقي", "منحنى تصاعدي"], answer:0, explanation:"علاقة طردية بين P و T"},
+      {q:"إطار سيارة ضغطه 5 atm عند 200 K، فإذا زادت الحرارة وأصبحت 300 K فإن الضغط يصبح:", options:["0.3 atm", "1.5 atm", "3.33 atm", "7.5 atm"], answer:3, explanation:"P₁/T₁ = P₂/T₂ → 5/200"},
+      {q:"استخدام أواني الضغط لطهي الطعام يُعد تطبيق عملي لقانون:", options:["شارل", "بويل", "جاي لوساك", "دالتون"], answer:2, explanation:"زيادة الضغط ترفع درجة"},
+      {q:"حاصل ضرب ضغط غاز في حجمه مقسوماً على درجة حرارته بالكلفن يساوي مقداراً ثابتاً:", options:["قانون بويل", "القانون العام للغازات", "قانون شارل", "قانون الغاز المثالي"], answer:1, explanation:"PV/T = ثابت = القانون"},
+      {q:"كم يصبح حجم عينة غاز إذا ضوعف ضغطها وخُفّضت درجة حرارتها المطلقة إلى النصف:", options:["لا يتغير", "ربع الحجم الأصلي", "نصف الحجم الأصلي", "ضعف الحجم الأصلي"], answer:1, explanation:"P×2، T÷2 → V ="},
+      {q:"عينة من غاز الأكسجين حجمها 5 L وضغطها 1 atm ودرجة حرارتها 500 K، فإذا زاد الضغط إلى 100 atm ودرجة الحرارة 1000 K فإن حجمها يُصبح:", options:["0.1 L", "0.5 L", "0.05 L", "0.01 L"], answer:0, explanation:"P₁V₁/T₁ = P₂V₂/T₂ →"},
+      {q:"وعاءان يحويان غازين مختلفين عند نفس الضغط والحرارة، فإن عدد الجزيئات:", options:["أكبر في الوعاء A", "أكبر في الوعاء B", "في الوعاء B ضعف A", "متساوياً في الوعاءين B, A"], answer:3, explanation:"مبدأ أفوجادرو: نفس"},
+      {q:"ما عدد مولات غاز حجمه 11.2 L في الظروف المعيارية:", options:["0.25 mol", "0.5 mol", "1 mol", "2 mol"], answer:1, explanation:"في STP: 1 mol = 22.4"},
+      {q:"نجعل غاز حقيقي يسلك سلوك غاز مثالي عند:", options:["زيادة الضغط ورفع درجة الحرارة", "نقصان الضغط وخفض درجة الحرارة", "نقصان الضغط ورفع درجة الحرارة", "زيادة الضغط وخفض درجة الحرارة"], answer:2, explanation:"الغاز الحقيقي يسلك"}
+    ]
+  },
+  {
+    title: "اليوم العاشر",
+    topic: "القسم الرابع: حسابات الغازات وطاقة الوضع",
+    icon: "🔥",
+    color: "#76ff03",
+    subtopics: [
+      {name:"الحسابات المتعلقة بالغازات وطاقة الوضع الكيميائية", count:35}
+    ],
+    questions: [
+      {q:"عند تحليل كمية من الماء بواسطة التحليل الكهربائي تكونت كمية من الهيدروجين حجمها 4 لترات، فإن حجم الأكسجين الناتج يساوي:", options:["8 L", "6 L", "4 L", "2 L"], answer:3, explanation:"2H₂O → 2H₂ + O₂. نسبة"},
+      {q:"في المعادلة 2CO(g) ← 2C(s) + O₂(g) احسب حجم أول أكسيد الكربون الناتج من تفاعل 2 L من غاز O₂ مع كمية كافية من الكربون:", options:["8 L", "6 L", "4 L", "2 L"], answer:2, explanation:"1 mol O₂ → 2 mol CO."},
+      {q:"المادة التي تُستهلك كلياً في التفاعل وتحدد كمية المادة الناتجة:", options:["المادة الفائضة", "المادة المترددة", "المادة المحدِّدة للتفاعل", "المادة الأمفوتيرية"], answer:2, explanation:"تعريف المادة المحدِّدة."},
+      {q:"مادة متفاعلة تبقى بعد توقف التفاعل:", options:["المادة المحدِّدة للتفاعل", "المادة الفائضة", "المادة المذيبة", "المادة المستهلكة"], answer:1, explanation:"المادة الفائضة تبقى"},
+      {q:"عند احتراق قطعة خشب فإن المادة المحددة للتفاعل:", options:["الأكسجين", "الكربون", "الخشب", "الهواء"], answer:2, explanation:"الخشب يُستهلك كلياً ="},
+      {q:"إذا تم الحصول على 20 g من AgCl وكانت نسبة المردود المئوية 50% فإن المردود النظري يساوي:", options:["20 g", "30 g", "40 g", "50 g"], answer:2, explanation:"المردود النظري ="},
+      {q:"نظرية الحركة الجزيئية تعتمد في وصفها لسلوك المادة على:", options:["كثافة الجسيمات", "شكل الجسيمات", "كتلة الجسيمات", "حركة الجسيمات"], answer:3, explanation:"نظرية الحركة الجزيئية"},
+      {q:"طاقة حركة جسيم الغاز تعتمد على:", options:["كتلته وحجمه", "كتلته وسرعته", "كتلته وسرعته وحجمه", "سرعته وحجمه"], answer:1, explanation:"طاقة الحركة = ½mv²"},
+      {q:"أيّ المواد التالية قابل للتمدد والانتشار:", options:["الغازات", "السوائل", "المواد الصلبة", "البلازما"], answer:0, explanation:"الغازات قابلة للتمدد"},
+      {q:"تُعرف خاصية تداخل الجسيمات معاً:", options:["الانتشار", "الغليان", "اللزوجة", "التدفق"], answer:0, explanation:"الانتشار = تداخل"},
+      {q:"عندما تشم رائحة الطعام في أرجاء المنزل فإن ذلك يعود إلى خاصية:", options:["الانتشار", "التمدد", "التفاعل", "التدفق"], answer:0, explanation:"انتشار جسيمات الغاز"},
+      {q:"عند خروج الغاز من ثقب صغير فإن ذلك يعود إلى خاصية:", options:["الانتشار", "الغليان", "اللزوجة", "التدفق"], answer:3, explanation:"التدفق = خروج الغاز"},
+      {q:"للمقارنة بين معدلي سرعة تدفق غازين يُستخدم قانون:", options:["شارل", "دالتون", "بويل", "جراهام"], answer:3, explanation:"قانون جراهام يقارن"},
+      {q:"معدل سرعة تدفق الغاز يتناسب عكسياً مع:", options:["كتلته المولية", "مربع كتلته المولية", "حجمه", "الجذر التربيعي لكتلته المولية"], answer:3, explanation:"قانون جراهام: السرعة"},
+      {q:"الضغط يُعادل \_\_\_ على وحدة المساحة:", options:["الكتلة", "القوة", "الحجم", "الكثافة"], answer:1, explanation:"الضغط = القوة /"},
+      {q:"الجهاز المستخدم في قياس الضغط الجوي:", options:["النانومتر", "المانومتر", "الترمومتر", "البارومتر"], answer:3, explanation:"البارومتر يقيس الضغط"},
+      {q:"المانومتر يُستخدم لقياس:", options:["الكتلة", "ضغط غاز محصور", "الكثافة", "الضغط الجوي"], answer:1, explanation:"المانومتر يقيس ضغط"},
+      {q:"الضغط الكلي لخليط من الغاز يساوي مجموع الضغوط الجزئية للغازات المكوّنة له:", options:["قانون بويل", "قانون دالتون للضغوط الجزئية", "قانون جاي لوساك", "قانون شارل"], answer:1, explanation:"قانون دالتون للضغوط"},
+      {q:"العامل غير المؤثر على الضغط الجزئي للغاز:", options:["نوع الغاز", "عدد المولات", "حجم الوعاء", "درجة حرارة خليط الغازات"], answer:0, explanation:"نوع الغاز لا يؤثر على"},
+      {q:"طاقة مخزنة في المادة نتيجة تركيبها:", options:["الطاقة النووية", "الطاقة الحرارية", "الطاقة الحركية", "طاقة الوضع الكيميائية"], answer:3, explanation:"تعريف طاقة الوضع"},
+      {q:"ما نوع التحول في الطاقة الناتج من احتراق غاز الميثان المستخدم في الطبخ:", options:["طاقة وضع كيميائية إلى حرارية", "طاقة حركية إلى حرارية", "طاقة حرارية إلى كيميائية", "طاقة حرارية إلى حركية"], answer:0, explanation:"الاحتراق يحوّل طاقة"},
+      {q:"الحرارة تنتقل من الجسم:", options:["الأسخن إلى الأبرد", "الأبرد إلى الأسخن", "الكبير إلى الصغير", "الصغير إلى الكبير"], answer:0, explanation:"الحرارة تنتقل من"},
+      {q:"أي التغيرات التالية طارد للحرارة:", options:["تحول 1 g من الماء إلى ثلج عند 0°C", "تحول 1 g من الماء إلى ثلج عند 20°C", "ذوبان الآيس كريم في درجة حرارة الغرفة", "تحول 1 g من الماء إلى بخار عند 100°C"], answer:0, explanation:"التجمد تفاعل طارد"},
+      {q:"إذا كان التغيّر في المحتوى الحراري -2270 kJ فإن نوع التفاعل:", options:["تبخر", "تفكك", "احتراق", "انصهار"], answer:2, explanation:"ΔH سالبة وكبيرة ="},
+      {q:"سبب استخدام نترات الأمونيوم في عمل الكمادة الباردة أنها:", options:["عازلة للحرارة", "ماصة للحرارة", "لا تتفاعل مع حرارة الجسم", "طاردة للحرارة"], answer:1, explanation:"نترات الأمونيوم تذوب"},
+      {q:"المحتوى الحراري الناتج عن حرق 1 mol من المادة احتراقاً كاملاً:", options:["حرارة الاحتراق", "حرارة الانصهار المولارية", "حرارة التبخر المولارية", "حرارة التكثف المولارية"], answer:0, explanation:"تعريف حرارة الاحتراق."},
+      {q:"أي العمليات التالية يُمثّل تفاعل ماص للحرارة:", options:["H₂O(l) → H₂O(s)", "C₁₀H₈(s) → C₁₀H₈(l)", "NH₃(l) → NH₃(s)", "Br₂(l) → Br₂(s)"], answer:1, explanation:"الانصهار (صلب → سائل)"},
+      {q:"إذا علمت أن حرارة تبخر الماء المولارية 40.7 KJ فإن حرارة تكثف الماء المولارية:", options:["+20.35 KJ", "-20.35 KJ", "-40.7 KJ", "+40.7 KJ"], answer:2, explanation:"حرارة التكثف = سالب"},
+      {q:"أي التغيرات التالية يُمثّل تفاعلاً طارداً للحرارة:", options:["H₂O(l) → H₂O(s)", "H₂O(l) → H₂O(g)", "Ca(s) → Ca(l)", "CH₃OH(l) → CH₃OH(g)"], answer:0, explanation:"التجمد (سائل → صلب)"},
+      {q:"ما نوع التغير الحراري في المعادلة H₂O(l) → H₂O(g):", options:["تجمد", "ماص للحرارة", "تكثف", "طارد للحرارة"], answer:1, explanation:"التبخر (سائل → غاز)"},
+      {q:"تتوقف حرارة التفاعل على المواد المتفاعلة والناتجة وليس على الخطوات أو المسار يُمثّل:", options:["القانون العام للغازات", "قانون الغاز المثالي", "قانون سرعة التفاعل", "قانون هس"], answer:3, explanation:"قانون هس."},
+      {q:"في التفاعل البطيء جداً الذي يستحيل فيه حساب ΔH يُستعمل:", options:["قانون هس", "قانون بويل", "القانون العام للغازات", "قانون شارل"], answer:0, explanation:"قانون هس يُستخدم"},
+      {q:"التغيّر في المحتوى الحراري الذي يرافق تكوّن مول واحد من المركب في الظروف القياسية من عناصره في حالاتها القياسية:", options:["حرارة الاحتراق", "قانون هس", "حرارة الانصهار المولارية", "حرارة التكوين القياسية"], answer:3, explanation:"تعريف حرارة التكوين"},
+      {q:"حرارة التكوين للعنصر في حالته القياسية تساوي:", options:["0 kJ/mol", "1 kJ/mol", "2 kJ/mol", "3 kJ/mol"], answer:0, explanation:"حرارة التكوين"},
+      {q:"أي التالي حرارة التكوين القياسية له -21:", options:["N₂", "H₂", "H₂S", "O₂"], answer:2, explanation:"N₂, H₂, O₂ عناصر"}
+    ]
+  },
+  {
+    title: "اليوم الحادي عشر",
+    topic: "القسم الخامس: سرعة التفاعل ونظرية التصادم",
+    icon: "⏱️",
+    color: "#18ffff",
+    subtopics: [
+      {name:"متوسط سرعة التفاعل ونظرية التصادم", count:10},
+      {name:"العوامل المؤثرة في سرعة التفاعل", count:8}
+    ],
+    questions: [
+      {q:"«معدل التغيّر في كميات المواد المتفاعلة أو الناتجة في وحدة الزمن» هذا النص يُعبر عن:", options:["الاتزان الكيميائي", "المادة المحفزة", "التعادل", "متوسط سرعة التفاعل"], answer:3, explanation:"تعريف متوسط سرعة"},
+      {q:"إذا كان تركيز الهيدروجين في بداية تفاعله مع الكلور يساوي 0.7 mol/L ثم أصبح 0.3 mol/L بعد مرور 4 s فما متوسط سرعة التفاعل:", options:["0.1 mol/L·s", "2 mol/L·s", "8 mol/L·s", "16 mol/L·s"], answer:0, explanation:"(0.7-0.3)/4 = 0.4/4 ="},
+      {q:"أي التالي صحيح للتصادم المثمر في التفاعلات الكيميائية:", options:["لا ينتج عنه تفاعل", "يحدُث للنواتج", "من العوامل المحفزة", "من شروط بدء التفاعل"], answer:3, explanation:"التصادم المثمر من شروط"},
+      {q:"أي التالي لا يُمثّل شرطاً لحدوث التفاعل وفقاً لنظرية التصادم:", options:["حدوث تصادمات بين الجزيئات المتفاعلة", "التصادمات في الاتجاه الصحيح", "ثبوت درجة الحرارة عند حدوث التصادمات", "أن تكون طاقة التصادم كافية لتكوين المعقد المنشط"], answer:2, explanation:"ثبوت درجة الحرارة ليس"},
+      {q:"المعقد المنشط:", options:["عامل محفز", "حالة غير مستقرة", "حالة مستقرة", "من النواتج"], answer:1, explanation:"المعقد المنشط حالة غير"},
+      {q:"الحد الأدنى من الطاقة اللازمة لإحداث التفاعل:", options:["طاقة التنشيط", "نوع المادة", "الاتجاه المناسب", "مساحة السطح"], answer:0, explanation:"تعريف طاقة التنشيط."},
+      {q:"في التفاعل الطارد للحرارة طاقة النواتج \_\_\_ طاقة المتفاعلات:", options:["تساوي", "أقل من", "ضعف", "أكثر من"], answer:1, explanation:"في الطارد: طاقة"},
+      {q:"الشكل يُمثّل تفاعلاً (طاقة النواتج أقل من المتفاعلات):", options:["متعادلاً", "طارداً للحرارة", "مساوياً في الطاقة", "ماصاً للحرارة"], answer:1, explanation:"طاقة النواتج أقل ="},
+      {q:"في مخطط الطاقة أي الرموز التالية يُمثّل طاقة تنشيط التفاعل (الرمز بين المتفاعلات والمعقد المنشط):", options:["1", "2", "3", "4"], answer:2, explanation:"طاقة التنشيط = الفرق **◼ مبدأ لوتشاتلييه والعوامل"},
+      {q:"الشكل يُمثّل تفاعلاً (طاقة النواتج أكبر من المتفاعلات):", options:["متعادلاً", "طارداً للحرارة", "متساوياً للحرارة", "ماصاً للحرارة"], answer:3, explanation:"طاقة النواتج أكبر ="},
+      {q:"الخارصين أسرع من النحاس عند التفاعل مع نترات الفضة بسبب:", options:["طبيعة المتفاعلات", "درجة الحرارة", "التركيز", "مساحة السطح"], answer:0, explanation:"الخارصين أنشط"},
+      {q:"تعمل زيادة مساحة سطح التفاعل على:", options:["تقليل سرعة التفاعل", "زيادة سرعة التفاعل", "لا تؤثر على سرعة التفاعل", "تثبيت سرعة التفاعل"], answer:1, explanation:"زيادة مساحة السطح"},
+      {q:"تصدأ برادة الحديد بشكل أسرع من قضيب الحديد عندما تتفاعل مع الأكسجين لأنه يعتمد على:", options:["مساحة السطح", "درجة الحرارة", "الضغط", "المواد المحفزة"], answer:0, explanation:"البرادة لها مساحة سطح"},
+      {q:"في الشكل، كلما زادت درجة حرارة التفاعل زاد:", options:["حجم التفاعل", "ضغط التفاعل", "المادة المحفزة للتفاعل", "عدد التصادمات بين الجسيمات"], answer:3, explanation:"زيادة الحرارة تزيد"},
+      {q:"في الشكل أي الإنزيمات التالية يُعد أكثرها فعالية (الأقل طاقة تنشيط):", options:["1", "2", "3", "4"], answer:0, explanation:"الإنزيم الأكثر فعالية"},
+      {q:"الجدول يوضح مادة غذائية وُضعت في أربعة أنابيب كل منها إنزيم هاضم بكميات غير متساوية، أي هذه الأنابيب يُعد الأسرع في التفاعل (الأقل طاقة تنشيط):", options:["1", "2", "3", "4"], answer:0, explanation:"الأنبوب ذو طاقة"},
+      {q:"أي العوامل التالية لا يؤثر في سرعة التفاعل:", options:["طبيعة المواد المتفاعلة", "طبيعة المواد الناتجة", "درجة الحرارة", "التركيز"], answer:1, explanation:"طبيعة المواد الناتجة"},
+      {q:"تُضاف المواد الحافظة في صناعة الأغذية لكي:", options:["تقلّل طاقة التنشيط أثناء التفاعل", "تزيد قيمة الطاقة الناتجة من احتراق الغذاء", "تساعد على عملية أكسدة الغذاء", "تعمل كمثبّط للتفاعل"], answer:3, explanation:"المواد الحافظة مثبطات"}
+    ]
+  },
+  {
+    title: "اليوم الثاني عشر",
+    topic: "القسم الخامس: قانون السرعة والاتزان",
+    icon: "⚖️",
+    color: "#ffab00",
+    subtopics: [
+      {name:"قانون سرعة التفاعل", count:9},
+      {name:"التفاعلات العكسية والاتزان الكيميائي", count:12}
+    ],
+    questions: [
+      {q:"إذا كانت رتبة تفاعل المادة A تساوي صفراً فإن تغيير تركيزها:", options:["يزيد سرعة التفاعل", "يُنقص سرعة التفاعل", "يُوقف التفاعل", "لا يؤثر على التفاعل"], answer:3, explanation:"رتبة صفر → تغيير"},
+      {q:"سرعة التفاعل تتناسب \_\_\_ تركيز المتفاعلات:", options:["طردياً مع", "عكسياً مع", "طردياً مع مربع", "عكسياً مع مربع"], answer:0, explanation:"سرعة التفاعل تتناسب"},
+      {q:"أي التالي ليس من وحدات قياس ثابت سرعة التفاعل:", options:["L/mol·s", "L/mol", "s⁻¹", "L²/mol²·s"], answer:1, explanation:"L/mol ليست وحدة لثابت"},
+      {q:"قانون سرعة التفاعل في المعادلة 2NO(g) + O₂(g) → 2NO₂(g):", options:["R=k\\[NO\\]³\\[O₂\\]²", "R=k\\[NO\\]\\[O₂\\]³", "R=k\\[NO\\]²\\[O₂\\]", "R=k\\[NO\\]²\\[O₂\\]³"], answer:2, explanation:"من المعاملات: R ="},
+      {q:"رتبة التفاعل الكلية لتفاعل قانون السرعة R=k\[A\]²\[B\]²:", options:["2", "3", "4", "5"], answer:2, explanation:"الرتبة الكلية = 2 + 2"},
+      {q:"قانون السرعة العام لتفاعل ما R=k\[A\]\[B\]³، ما رتبة هذا التفاعل:", options:["الأولى", "الثانية", "الثالثة", "الرابعة"], answer:3, explanation:"الرتبة = 1 + 3 = 4."},
+      {q:"من خلال قانون سرعة التفاعل R=k\[H₂\]\[NO\]² يُصنف التفاعل من الرتبة:", options:["الأولى", "الثانية", "الثالثة", "الرابعة"], answer:2, explanation:"الرتبة = 1 + 2 = 3."},
+      {q:"في تفاعل ما إذا كان قانون سرعته R=k\[A\]ᵐ\[B\]² والتفاعل من الرتبة الثالثة، فما قيمة m:", options:["1", "2", "3", "4"], answer:0, explanation:"m + 2 = 3 → m = 1."},
+      {q:"سرعة التفاعل الابتدائية تكون لحظة:", options:["منتصف التفاعل", "إضافة المتفاعلات", "إضافة العامل المحفز", "الحصول على النواتج"], answer:1, explanation:"السرعة الابتدائية ="},
+      {q:"تفاعل يحدث في الاتجاهين الأمامي والعكسي:", options:["التفاعل المكتمل", "التفاعل العكسي", "التفاعل غير النشط", "التفاعل غير المتزن"], answer:1, explanation:"التفاعل العكسي يحدث"},
+      {q:"حالة النظام عندما تتساوى سرعتا التفاعل الأمامي والعكسي:", options:["الاتزان الكيميائي", "سرعة التفاعل الكيميائي", "المعقد النشط", "التفاعل غير المتزن"], answer:0, explanation:"تعريف الاتزان"},
+      {q:"إذا وصل تفاعل ما إلى حالة اتزان فإن:", options:["حركة الجزيئات الناتجة تبقى كما هي", "حركة الجزيئات المتفاعلة تبقى كما هي", "سرعتي التفاعل الأمامي والعكسي مختلفتان", "سرعتي التفاعل الأمامي والعكسي متساويتان"], answer:3, explanation:"عند الاتزان تتساوى"},
+      {q:"أي التالي صحيح عند حالة الاتزان:", options:["يُعد الاتزان حالة ساكنة", "سرعة المتفاعلات والنواتج مختلفة", "تتحول المتفاعلات إلى نواتج", "تراكيز المتفاعلات والنواتج ثابتة"], answer:3, explanation:"عند الاتزان تثبت"},
+      {q:"كتابة معادلة التفاعل بسهم مزدوج تعني أن التفاعل وصل إلى:", options:["المعقد النشط", "طاقة التنشيط", "الاتزان الكيميائي", "نهاية التفاعل"], answer:2, explanation:"السهم المزدوج يعني"},
+      {q:"إذا كان تركيز المتفاعلات أكبر من تركيز النواتج عند الاتزان فإن:", options:["Keq = 0", "Keq = 1", "Keq \\< 1", "Keq \\> 1"], answer:2, explanation:"المتفاعلات أكبر → Keq"},
+      {q:"إذا كان تركيز المواد الناتجة أكبر من تركيز المواد المتفاعلة عند الاتزان فإن:", options:["Keq = 0", "Keq = 1", "Keq \\< 1", "Keq \\> 1"], answer:3, explanation:"النواتج أكبر → Keq \>"},
+      {q:"في التفاعل 2H₂S(g) ⇌ 2H₂(g) + S₂(g) إذا كانت قيمة Keq ذات قيمة كبيرة فإن:", options:["التفاعل لا يمكن حدوثه", "تراكيز المواد الناتجة أكبر", "تراكيز المواد المتفاعلة أكبر", "التفاعل بطيء جداً"], answer:1, explanation:"Keq كبيرة → النواتج"},
+      {q:"ما قانون الاتزان للتفاعل 2H₂O₂(g) ⇌ 2H₂O(g) + O₂(g):", options:["Keq = \\[O₂\\]", "Keq = \\[H₂O\\]²\\[O₂\\]", "Keq = \\[H₂O\\]²\\[O₂\\]/\\[H₂O₂\\]²", "Keq = \\[O\\] / \\[H₂O₂\\]²"], answer:2, explanation:"Keq = \[H₂O\]²\[O₂\]"},
+      {q:"ما قيمة ثابت الاتزان للتفاعل I₂(g) ⇌ 2HI(g) + H₂(g) علماً أن تركيز \[I₂\]=4M, \[H₂\]=5M, \[HI\]=10M:", options:["5", "6", "7", "8"], answer:0, explanation:"Keq = \[HI\]²\[H₂\] /"},
+      {q:"إذا كانت المتفاعلات والنواتج حالاتها الفيزيائية مختلفة فإن التفاعل:", options:["في حالة اتزان متجانس", "في حالة اتزان غير متجانس", "في حالة توقُّف", "مكتمل"], answer:1, explanation:"حالات فيزيائية مختلفة"},
+      {q:"أي التالي ليس من خواص الاتزان:", options:["تظل درجة الحرارة ثابتة", "التفاعل يتم في نظام مغلق", "يزيد حجم التفاعل", "المتفاعلات والنواتج في حالة اتزان"], answer:2, explanation:"زيادة حجم التفاعل"}
+    ]
+  },
+  {
+    title: "اليوم الثالث عشر",
+    topic: "القسم الخامس: مبدأ لوتشاتلييه",
+    icon: "🎯",
+    color: "#69f0ae",
+    subtopics: [
+      {name:"مبدأ لوتشاتلييه والعوامل المؤثرة على الاتزان", count:24}
+    ],
+    questions: [
+      {q:"أي التالي يُعد من العوامل المؤثرة في الاتزان الكيميائي:", options:["التغيّر في الحجم والضغط", "التغيّر في التركيز", "تغيّر درجة الحرارة", "جميع ما سبق"], answer:3, explanation:"التركيز والحجم والضغط"},
+      {q:"إذا كان التفاعل CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g) في حالة اتزان فإن إضافة المزيد من CO(g) يؤدي إلى:", options:["نقص سرعة التفاعل الأمامي", "تكوين مزيد من المواد الناتجة", "زيادة سرعة التفاعل العكسي", "تكوين مزيد من المواد المتفاعلة"], answer:1, explanation:"زيادة CO → يُزاح نحو"},
+      {q:"في التفاعل N₂(g) + 2O₂(g) ⇌ 2NO₂(g) عند زيادة تركيز N₂ مع كمية كافية من O₂ فإن التفاعل:", options:["لا يتأثر", "ينشط باتجاه تكوين N₂", "ينشط باتجاه تكوين O₂", "ينشط باتجاه تكوين NO₂"], answer:3, explanation:"زيادة N₂ → يُزاح نحو"},
+      {q:"في التفاعل N₂(g) + 3H₂(g) ⇌ 2NH₃(g) عند زيادة تركيز غاز النيتروجين N₂ فإن الاتزان:", options:["يُزاح نحو المتفاعلات", "يُزاح نحو النواتج", "لا يتأثر", "يتوقف التفاعل"], answer:1, explanation:"زيادة تركيز متفاعل →"},
+      {q:"إذا زاد الضغط في تفاعل متزن فإنه يُزاح نحو:", options:["عدد المولات الأكبر", "عدد المولات الأقل", "التركيز الأكبر", "لا يتأثر التفاعل"], answer:1, explanation:"زيادة الضغط → يُزاح"},
+      {q:"في التفاعل CO(g) + 3H₂(g) ⇌ CH₄(g) + H₂O(g) إذا زاد الضغط فإن الاتزان:", options:["لا يتأثر", "يُزاح نحو عدد المولات الأقل", "يُزاح نحو المتفاعلات", "يُزاح نحو عدد المولات الأكثر"], answer:1, explanation:"المتفاعلات 4 مولات،"},
+      {q:"في التفاعل H₂(g) + Cl₂(g) ⇌ 2HCl(g) إذا زاد الضغط فإن الاتزان:", options:["لا يتأثر", "يُزاح نحو المتفاعلات", "يُزاح نحو النواتج", "يُزاح نحو النواتج"], answer:0, explanation:"عدد المولات متساوٍ"},
+      {q:"لإزاحة الاتزان نحو اليسار في التفاعل A + B ⇌ C + D + Heat فإننا نقوم بـ:", options:["إضافة حرارة", "سحب حرارة", "زيادة أحد المتفاعلات", "إزالة أحد النواتج"], answer:0, explanation:"التفاعل طارد. إضافة"},
+      {q:"في التفاعل Heat + PCl₃(g) + Cl₂(g) ⇌ PCl₅(g) سحب الحرارة يُغيّر من حالة الاتزان نحو:", options:["اليسار فتزداد النواتج", "اليمين فتزداد النواتج", "اليسار فتزداد المتفاعلات", "اليمين فيتوقف التفاعل"], answer:2, explanation:"التفاعل ماص. سحب"},
+      {q:"سحب الحرارة من تفاعل متزن طارد للحرارة يُغيّر حالة الاتزان نحو:", options:["اليسار فتزيد النواتج", "اليمين فتزيد النواتج", "اليسار فتزيد المتفاعلات", "اليمين فيتوقف التفاعل"], answer:1, explanation:"طارد + سحب حرارة →"},
+      {q:"في التفاعل: حرارة + CO(g) + 3H₂(g) ⇌ CH₄(g) + H₂O(g) سحب الحرارة يُغيّر حالة الاتزان نحو:", options:["اليسار فتزيد النواتج", "اليمين فتزيد النواتج", "اليسار فتزيد المتفاعلات", "اليمين فيتوقف التفاعل"], answer:2, explanation:"ماص + سحب حرارة →"},
+      {q:"في المعادلة: Δ + CH₄(g) + 2O₂(g) ⇌ 2CO₂(g) + 2H₂O(g) عند رفع درجة حرارة التفاعل فإن ذلك يؤدي إلى:", options:["نقص كمية CH₄", "نقص كمية O₂", "زيادة كمية CO₂", "نقص كمية H₂O"], answer:0, explanation:"التفاعل طارد. رفع"},
+      {q:"في التفاعل CO(g) + H₂(g) ⇌ CH₃OH(g) + Heat أي التغيرات التالية تزيح الاتزان نحو تكوين المزيد من الميثانول CH₃OH:", options:["زيادة درجة الحرارة", "زيادة حجم وعاء التفاعل", "إضافة CO", "إضافة عامل محفز"], answer:2, explanation:"إضافة CO (متفاعل) →"},
+      {q:"عند نقص درجة الحرارة لتفاعل ماص موجود في حالة اتزان:", options:["يتجه التفاعل نحو اليمين", "يزيد تركيز المتفاعلات", "تزيد قيمة ثابت الاتزان", "لا يتأثر تركيز النواتج"], answer:1, explanation:"ماص + نقص حرارة →"},
+      {q:"ما أثر زيادة الحرارة للتفاعل المتزن 55.3 kJ + N₂O₄(g) ⇌ 2NO₂(g):", options:["زيادة كمية NO₂", "نقص كمية NO₂", "زيادة كمية N₂O₄", "توقُّف التفاعل"], answer:0, explanation:"ماص + زيادة حرارة →"},
+      {q:"العامل الوحيد الذي يُغيّر من قيمة ثابت الاتزان:", options:["الضغط والحجم", "التركيز", "درجة الحرارة", "العامل المحفز"], answer:2, explanation:"ثابت الاتزان لا يتغير"},
+      {q:"ماذا يحدث لثابت الاتزان عند رفع درجة الحرارة للتفاعل الماص للحرارة:", options:["يقل", "يزيد", "يثبت", "لا يتغير"], answer:1, explanation:"ماص + زيادة حرارة →"},
+      {q:"لدينا تفاعل ماص للحرارة في حالة اتزان، أي العوامل التالية تزيد من قيمة ثابت الاتزان حسب مبدأ لوتشاتلييه:", options:["العامل المحفز", "نقص درجة الحرارة", "إضافة النواتج", "زيادة درجة الحرارة"], answer:3, explanation:"ماص + زيادة حرارة →"},
+      {q:"العلاقة بين ثابت الاتزان ودرجة الحرارة في التفاعل الماص للحرارة:", options:["ثابتة", "تربيعية عكسية", "عكسية", "طردية"], answer:3, explanation:"في الماص: زيادة"},
+      {q:"أي التالي لا يؤثر في حالة الاتزان:", options:["زيادة درجة الحرارة", "نقص الحجم", "العامل المحفز", "زيادة الضغط"], answer:2, explanation:"العامل المحفز لا يؤثر"},
+      {q:"وفقاً للمعادلة CaCO₃(s) ⇌ CaO(s) + CO₂(g) أي العوامل التالية لا يؤثر على حالة الاتزان لانحلال كربونات الكالسيوم حرارياً:", options:["إضافة عامل محفز", "تغيير تركيز CO₂", "رفع درجة الحرارة", "إنقاص حجم الوعاء"], answer:0, explanation:"العامل المحفز لا يؤثر"},
+      {q:"إذا كان Qsp \< Ksp فإن المحلول:", options:["غير مشبع ويتكوّن راسب", "غير مشبع ولا يتكوّن راسب", "مشبع ويتكوّن راسب", "مشبع ولا يتكوّن راسب"], answer:1, explanation:"Qsp \< Ksp → المحلول"},
+      {q:"في أي الحالات التالية يتكوّن راسب:", options:["Qsp = Ksp", "Qsp ≈ Ksp", "Qsp \\> Ksp", "Qsp \\< Ksp"], answer:2, explanation:"Qsp \> Ksp → يتكوّن"},
+      {q:"ماذا يحدث لذائبية مادة عند وجود أيونات مشتركة:", options:["تقل", "تزداد", "تثبت", "لا تتأثر"], answer:0, explanation:"الأيون المشترك يُقلل"}
+    ]
+  },
+  {
+    title: "اليوم الرابع عشر",
+    topic: "القسم السادس: المخاليط وأنواعها",
+    icon: "🧫",
+    color: "#40c4ff",
+    subtopics: [
+      {name:"المخاليط وأنواعها وطرق فصلها", count:15}
+    ],
+    questions: [
+      {q:"من خواص المخلوط:", options:["لا تفقد مكوناته خواصها", "ينتج عن تفاعل كيميائي", "تتكون مواده بنسب ثابتة", "تُفصل مكوناته بطرق كيميائية"], answer:0, explanation:"في المخلوط تحتفظ كل"},
+      {q:"من خواص المخاليط المتجانسة:", options:["تنفصل مكوناتها مع مرور الوقت", "مكوناتها مختلطة بانتظام ولا يمكن التمييز بينها", "تحدث فيها ظاهرة تندال", "تحدث فيها الحركة البراونية"], answer:1, explanation:"المخاليط المتجانسة"},
+      {q:"السكر الذائب في الماء يُعد:", options:["مخلوطاً متجانساً", "مخلوطاً غير متجانس", "غروياً", "معلقاً"], answer:0, explanation:"السكر يذوب بانتظام في"},
+      {q:"مواد غير موزعة بانتظام ولا تمتزج مكوناتها تماماً:", options:["مخلوط متجانس", "محلول", "مخلوط غير متجانس", "سبيكة"], answer:2, explanation:"تعريف المخلوط غير"},
+      {q:"مخلوط الماء والطباشير يُعد:", options:["مخلوطاً متجانساً", "مخلوطاً معلقاً", "مخلوطاً غروياً", "مركباً"], answer:1, explanation:"الماء والطباشير مخلوط"},
+      {q:"من أمثلة المخلوط المعلق:", options:["الدم", "محلول السكر", "الماء مع الرمل", "المشروب الغازي"], answer:2, explanation:"الماء مع الرمل مخلوط"},
+      {q:"أي التالي يُعد من المخاليط غير المتجانسة:", options:["الهواء الجوي", "دم الإنسان", "محلول سكر وماء", "العملة النقدية"], answer:1, explanation:"دم الإنسان مخلوط غير"},
+      {q:"أي التالي يُعد مخلوطاً غير متجانس:", options:["الحليب", "السكر الذائب في الماء", "الملح المذاب في الماء", "الهواء"], answer:0, explanation:"الحليب مخلوط غروي ="},
+      {q:"الطريقة المناسبة لفصل مكونات مخلوط غير متجانس مكوّن من مادة صلبة وسائل:", options:["الترشيح", "التقطير", "التبلور", "التسامي"], answer:0, explanation:"الترشيح يفصل الصلب عن"},
+      {q:"طريقة لفصل مكونات الحبر المختلفة:", options:["الترشيح", "التبلور", "الكروماتوجرافيا", "التقطير"], answer:2, explanation:"الكروماتوجرافيا تفصل"},
+      {q:"طريقة لفصل المواد اعتماداً على الاختلاف في درجات غليانها:", options:["الترشيح", "التقطير", "التبلور", "التسامي"], answer:1, explanation:"التقطير يفصل بناءً على"},
+      {q:"عملية تتبخر فيها المادة الصلبة دون أن تنصهر وتُستخدم في فصل المخلوط:", options:["التقطير", "التسامي", "التبلور", "الترشيح"], answer:1, explanation:"التسامي = تبخر الصلب"},
+      {q:"حركة عشوائية وعنيفة للجسيمات المنتشرة في المخاليط الغروية السائلة:", options:["الحركة الغروانية", "الحركة الدورانية", "الحركة البراونية", "الحركة الاهتزازية"], answer:2, explanation:"الحركة البراونية = **◼ الذائبية والخواص الجامعة"},
+      {q:"تعمل الحركة البراونية في المخلوط على منع جسيمات المذاب من:", options:["التأين", "الترسب", "الترابط", "الذوبان"], answer:1, explanation:"الحركة البراونية تمنع"},
+      {q:"أي التالي يُمثّل عملية تشتيت الضوء بفعل الجسيمات المنتشرة في المخلوط الغروي والمعلّق:", options:["تأثير تندال", "الحركة البراونية", "المخلوط المتجانس", "الذائبية"], answer:0, explanation:"تأثير تندال = تشتيت"}
+    ]
+  },
+  {
+    title: "اليوم الخامس عشر",
+    topic: "القسم السادس: المحاليل وتركيزها",
+    icon: "⚗️",
+    color: "#ea80fc",
+    subtopics: [
+      {name:"المحاليل وتركيزها وتخفيفها", count:27}
+    ],
+    questions: [
+      {q:"المزيج المتجانس من مادتين نقيتين أو أكثر:", options:["المذاب", "المذيب", "المحلول", "المركب"], answer:2, explanation:"المحلول = مخلوط"},
+      {q:"يُعد الهواء الجوي من أنواع المحاليل التي فيها المذاب والمذيب:", options:["سائل-سائل", "غاز-غاز", "سائل-غاز", "صلب-سائل"], answer:1, explanation:"الهواء محلول غاز-غاز."},
+      {q:"إضافة غاز النشادر إلى الماء يُعد محلولاً:", options:["غاز-سائل", "سائل-صلب", "صلب-صلب", "غاز-غاز"], answer:0, explanation:"غاز النشادر في الماء"},
+      {q:"يحوي محلول حمض الكبريتيك المخفف مذاباً ومذيباً من نوع:", options:["صلب-سائل", "غاز-سائل", "سائل-سائل", "غاز-غاز"], answer:2, explanation:"الحمض المخفف يحوي"},
+      {q:"يُعد ماء البحر من أنواع المحاليل التي فيها المذاب والمذيب:", options:["سائل-سائل", "غاز-غاز", "سائل-غاز", "سائل-صلب"], answer:0, explanation:"ماء البحر أملاح ذائبة"},
+      {q:"سبيكة الفولاذ تُعد:", options:["مخلوطاً متجانساً", "مخلوطاً غروياً", "مخلوطاً غير متجانس", "مخلوطاً معلقاً"], answer:0, explanation:"الفولاذ سبيكة = محلول"},
+      {q:"يُعبّر عن النسبة بين كمية المذاب في كمية من المذيب أو المحلول بـ:", options:["الكثافة", "الحجم", "التركيز", "الكتلة"], answer:2, explanation:"التركيز = نسبة المذاب"},
+      {q:"ما النسبة المئوية بدلالة الكتلة لمحلول يحوي 5 g من مادة مذابة في 50 g ماء:", options:["5%", "9%", "10%", "12%"], answer:1, explanation:"كتلة المحلول = 55 g."},
+      {q:"ما تركيز محلول يحوي 9 mL من الإيثانول في 50 mL من المحلول:", options:["9%", "25%", "18%", "36%"], answer:0, explanation:"النسبة الحجمية ="},
+      {q:"لتحضير 1000 mL من محلول حمض HCl المائي تركيزه 5% بالحجم فإنه يلزم:", options:["إضافة 50 mL من HCl إلى 950 mL من الماء", "إضافة 950 mL من HCl إلى 5 mL من الماء", "إضافة 5 mL من HCl إلى 950 mL من الماء", "إضافة 5 mL من HCl إلى 1000 mL من الماء"], answer:0, explanation:"5% من 1000 = 50 mL من"},
+      {q:"عدد مولات المذاب في 1000 mL من المحلول هي:", options:["المولالية", "المولارية", "النسبة المئوية الحجمية", "النسبة المئوية الوزنية"], answer:1, explanation:"المولارية = عدد مولات"},
+      {q:"تعتمد المولارية على:", options:["كتلة المذاب", "كتلة المذيب", "حجم المحلول", "كتلة المحلول"], answer:2, explanation:"المولارية = مولات"},
+      {q:"أي الوحدات التالية صحيح للتعبير عن المولارية:", options:["مول/مللي لتر", "مللي لتر/مول", "لتر/مول", "مول/لتر"], answer:0, explanation:"وحدة المولارية ="},
+      {q:"ما مولارية حمض هيدروكلوريك عدد مولاته 0.5 mol وحجمه 10 L:", options:["0.005 M", "0.05 M", "0.5 M", "5 M"], answer:1, explanation:"M = 0.5/10 = 0.05 M."},
+      {q:"عند إذابة 52 g من LiF في كمية من الماء تكوّن محلول حجمه 2 L، فما مولاريته (علماً أن Li=7, F=19):", options:["1 M", "2 M", "13 M", "26 M"], answer:0, explanation:"الكتلة المولية = 26."},
+      {q:"محلول حجمه 100 mL وعدد مولات المذاب فيه 2 mol، كم تبلغ مولاريته:", options:["0.1 mol/L", "0.2 mol/L", "2 mol/L", "20 mol/L"], answer:3, explanation:"M = 2/0.1 = 20 mol/L."},
+      {q:"ما عدد مولات حمض الكلور في 250 mL من محلول تركيزه 5 M:", options:["0.25 mol", "1.25 mol", "2 mol", "2.5 mol"], answer:1, explanation:"n = M×V = 5 × 0.25 ="},
+      {q:"ما حجم محلول قياسي KI تركيزه 2 M واللازم لتحضير محلول مخفف منه حجمه 0.2 L وتركيزه 1 M:", options:["100 mL", "200 mL", "300 mL", "400 mL"], answer:0, explanation:"M₁V₁ = M₂V₂ → 2×V₁ ="},
+      {q:"محلول قياسي من H₂SO₄ تركيزه 2 M وحجمه 0.5 L خُفف ليصبح حجمه 1 L، ما كتلة H₂SO₄ (علماً أن S=32, O=16, H=1):", options:["24.5 g", "49 g", "98 g", "196 g"], answer:2, explanation:"عدد المولات = 2×0.5 ="},
+      {q:"ما حجم الماء اللازم إضافته إلى 6 mL من محلول قياسي تركيزه 0.05 M ليصبح تركيز المحلول 0.02 M:", options:["15 mL", "9 mL", "6 mL", "2.4 mL"], answer:1, explanation:"M₁V₁=M₂V₂ →"},
+      {q:"عدد مولات المذاب في 1 kg من المذيب:", options:["المولارية", "المولالية", "الكسر المولي", "النسبة المئوية بدلالة الكتلة"], answer:1, explanation:"المولالية = مولات"},
+      {q:"تُعرف المولالية بأنها عدد مولات المذاب في:", options:["100 g من المذيب", "100 g من المحلول", "1000 g من المذيب", "1000 g من المحلول"], answer:2, explanation:"المولالية = مولات"},
+      {q:"إذا أذبنا 0.5 mol من ملح في 500 g ماء فإنّ مولالية المحلول تساوي:", options:["1", "1.5", "2", "3"], answer:0, explanation:"m = 0.5/0.5 = 1"},
+      {q:"ما قيمة مولالية محلول يحوي 20 g من المذاب في 2 kg من المذيب (علماً أنّ الكتلة المولية للمذاب 100 g/mol):", options:["0.01", "0.1", "0.21", "0.3"], answer:1, explanation:"المولات = 20/100 ="},
+      {q:"أي التالي يُعبّر عن المولالية:", options:["mol/1000 g", "mol/1000 L", "mol/100 L", "mol/100 g"], answer:0, explanation:"المولالية = mol/kg ="},
+      {q:"تُسمى عملية إحاطة جزيئات المذاب بالمذيب:", options:["التفكك", "التأين", "الذوبان", "التفاعل"], answer:2, explanation:"الذوبان = إحاطة"},
+      {q:"أي التالي لا يُعد من طرق زيادة سرعة الذوبان:", options:["تحريك المحلول", "عدم ملامسة المذاب للمذيب", "زيادة مساحة سطح المذاب", "رفع درجة حرارة المذيب"], answer:1, explanation:"عدم ملامسة المذاب"}
+    ]
+  },
+  {
+    title: "اليوم السادس عشر",
+    topic: "القسم السادس: الذائبية والخواص الجامعة",
+    icon: "💧",
+    color: "#ff6e40",
+    subtopics: [
+      {name:"الذائبية والخواص الجامعة للمحاليل", count:17}
+    ],
+    questions: [
+      {q:"الشكل يوضح العلاقة بين الذائبية ودرجة الحرارة، فإن أكثر المواد ذائبية عند ارتفاع درجة الحرارة:", options:["E", "F", "G", "H"], answer:3, explanation:"المادة H أعلى ذائبية"},
+      {q:"ينص قانون هنري على أن \_\_\_ تتناسب طردياً مع \_\_\_ فوق السائل عند ثبوت درجة الحرارة:", options:["الضغط-الحجم", "ذائبية الغاز-ضغط الغاز", "درجة الحرارة-الضغط", "حجم الوعاء-قياس المائع"], answer:1, explanation:"قانون هنري: ذائبية"},
+      {q:"أيّ العوامل التالية يزيد من ذائبية الغاز في سائل:", options:["رفع درجة الحرارة فقط", "زيادة ضغط الغاز فقط", "زيادة ضغط الغاز ورفع درجة الحرارة", "خفض ضغط الغاز ورفع درجة الحرارة"], answer:1, explanation:"ذائبية الغاز تزيد"},
+      {q:"ذائبية غاز 20 g/L عند ضغط 40 Pa، ما قيمة الضغط التي تصبح عندها ذائبية الغاز 10 g/L:", options:["20 Pa", "200 Pa", "400 Pa", "800 Pa"], answer:0, explanation:"S₁/P₁ = S₂/P₂ → 20/40"},
+      {q:"ذائبية غاز في سائل تزيد بـ:", options:["نقصان الضغط", "زيادة التحريك", "نقصان درجة الحرارة", "زيادة الحجم"], answer:2, explanation:"ذائبية الغاز تزيد"},
+      {q:"تسمع صوتاً قوياً عند فتح علبة مشروب غازي نتيجة تصاعد غاز:", options:["CO₂(g)", "H₂O(g)", "O₂(g)", "H₂(g)"], answer:0, explanation:"المشروبات الغازية"},
+      {q:"أي التالي ليس من الخواص الجامعة للمحاليل:", options:["الضغط الأسموزي", "الانخفاض في الضغط البخاري", "الضغط الجوي", "الارتفاع في درجة الغليان"], answer:2, explanation:"الضغط الجوي ليس من"},
+      {q:"أي التالي ليس من الخواص الجامعة للمحاليل:", options:["الارتفاع في درجة الغليان", "الضغط الأسموزي", "الكثافة", "الانخفاض في درجة التجمد"], answer:2, explanation:"الكثافة ليست من"},
+      {q:"الضغط البخاري \_\_\_ عدد جسيمات المذاب في المذيب:", options:["يزيد بزيادة", "لا يتأثر بتغير", "ينقص بزيادة", "ينقص بنقصان"], answer:2, explanation:"الضغط البخاري ينقص"},
+      {q:"الفرق بين درجة حرارة غليان المحلول ودرجة غليان المذيب النقي:", options:["الانخفاض في درجة الغليان", "درجة تجمد المذيب النقي", "الارتفاع في درجة الغليان", "درجة غليان المذاب"], answer:2, explanation:"تعريف الارتفاع في"},
+      {q:"عندما يعادل ضغط السائل ضغط الغاز المحيط به يحدث:", options:["انصهار", "ذوبان", "غليان", "انخفاض في درجة التجمد"], answer:2, explanation:"الغليان يحدث عندما"},
+      {q:"يعتمد ثابت الارتفاع في درجة الغليان على:", options:["طبيعة المذيب", "طبيعة المذاب", "مولارية المحلول", "مولالية المحلول"], answer:0, explanation:"ثابت الارتفاع Kb"},
+      {q:"عند الصعود إلى أعلى قمة جبل مرتفع فإن درجة غليان الماء:", options:["تقل", "تزيد", "تتضاعف", "لا تتأثر"], answer:0, explanation:"ينخفض الضغط الجوي →"},
+      {q:"إضافة الملح إلى الجليد على الطرق في فصل الشتاء تؤدي إلى:", options:["رفع درجة تجمد الجليد فتزيد صلابة الطريق", "خفض درجة حرارة الجليد فيزيد صلابته", "رفع درجة حرارة الجليد فينصهر", "خفض درجة التجمد للجليد فينصهر"], answer:3, explanation:"إضافة الملح تخفض درجة"},
+      {q:"عند إضافة مادة غير متطايرة إلى سائل نقي فإن:", options:["درجة الغليان تنخفض ودرجة التجمد ترتفع", "درجة الغليان ترتفع ودرجة التجمد تنخفض", "درجة الغليان لا تتأثر", "درجة الغليان ودرجة التجمد تنخفضان"], answer:1, explanation:"إضافة مذاب → ترتفع"},
+      {q:"إذابة مادة صلبة في محلول تؤدي إلى:", options:["انخفاض درجة الغليان", "ارتفاع الضغط البخاري", "ارتفاع درجة التجمد", "انخفاض درجة التجمد"], answer:3, explanation:"إذابة مادة → انخفاض"},
+      {q:"انتشار المذيب من المحلول الأقل تركيزاً إلى المحلول الأكثر تركيزاً:", options:["التركيز المولاري", "التخفيف", "الخاصية الأسموزية", "الذائبية"], answer:2, explanation:"تعريف الخاصية"}
+    ]
+  },
+  {
+    title: "اليوم السابع عشر",
+    topic: "القسم السابع: الأحماض والقواعد وأرهينيوس",
+    icon: "🧪",
+    color: "#7c4dff",
+    subtopics: [
+      {name:"خواص الأحماض والقواعد ونظرية أرهينيوس", count:14}
+    ],
+    questions: [
+      {q:"من خواص المركبات القاعدية:", options:["طعمها مر وملمسها صابوني", "لا توصل الكهرباء", "تغير لون ورقة تباع الشمس من الأزرق إلى الأحمر", "تتفاعل مع الفلزات وتنتج غاز الهيدروجين"], answer:0, explanation:"القواعد طعمها مر"},
+      {q:"الخاصية المشتركة بين الأحماض والقواعد:", options:["قابلية التوصيل الكهربائي", "طعمها مُر", "إنتاج أيونات الهيدروجين", "إنتاج أيونات الهيدروكسيد"], answer:0, explanation:"كلاهما يوصل الكهرباء. **◼ الرقم الهيدروجيني pH وتفاعل"},
+      {q:"محاليل الأحماض تُحوّل لون ورقة تباع الشمس:", options:["الأزرق إلى الأحمر", "الأزرق إلى الأخضر", "الأزرق إلى الأصفر", "الأحمر إلى الأزرق"], answer:0, explanation:"الأحماض تحوّل الأزرق"},
+      {q:"من خواص المركبات الحامضية أنها:", options:["تغير لون ورقة تباع الشمس الحمراء", "تتفاعل مع الفلزات وتنتج غاز الهيدروجين", "طعمها مر وملمسها صابوني", "محاليلها غير موصلة للكهرباء"], answer:1, explanation:"الأحماض تتفاعل مع"},
+      {q:"مادة كيميائية يمكن أن تُحوّل ورق تباع الشمس الأحمر إلى اللون الأزرق:", options:["HCl", "KCl", "CH₃COOH", "NaOH"], answer:3, explanation:"NaOH قاعدة تحوّل الأحمر"},
+      {q:"من خواص المحلول القاعدي:", options:["يحوي أيون الهيدرونيوم", "pH ثابت", "تركيز أيونات الهيدروكسيد أكثر من تركيز أيونات الهيدرونيوم", "تركيز أيونات الهيدرونيوم أكثر من تركيز أيونات الهيدروكسيد"], answer:2, explanation:"في المحلول القاعدي"},
+      {q:"يُصنف الماء النقي بأنه مادة:", options:["متعادلة", "قاعدية", "حمضية", "مترددة"], answer:0, explanation:"الماء النقي متعادل"},
+      {q:"ارتباط الماء مع أيون الهيدروجين ينتُج عنه أيون:", options:["أمونيوم", "هيدروكسيد", "هيدرونيوم", "هيدروجين"], answer:2, explanation:"H⁺ + H₂O → H₃O⁺"},
+      {q:"أيون هيدروجين مرتبط مع جزيء ماء برابطة تساهمية:", options:["H₃O⁺", "OH⁻", "H₂O", "H⁺"], answer:0, explanation:"H₃O⁺ = أيون"},
+      {q:"تعريف الحمض حسب نظرية أرهينيوس هي المادة التي:", options:["تمنح زوجاً من الإلكترونات", "تستقبل زوجاً من الإلكترونات", "تحوي OH⁻", "تحوي H⁺"], answer:3, explanation:"حسب أرهينيوس: الحمض"},
+      {q:"أي المركبات التالية حمض حسب نظرية أرهينيوس:", options:["PCl₃", "NaOH", "HCl", "NH₃"], answer:2, explanation:"HCl يحوي H⁺ = حمض"},
+      {q:"يعتبر الجزيء H₂S حسب نظرية أرهينيوس:", options:["حمضي", "قاعدي", "متردد", "متعادل"], answer:0, explanation:"H₂S يحوي H → حمض حسب"},
+      {q:"تعريف القاعدة حسب نظرية أرهينيوس هي المادة التي:", options:["تُنتج H⁺", "تُنتج OH⁻", "تمنح زوجاً من الإلكترونات", "تستقبل زوجاً من الإلكترونات"], answer:1, explanation:"القاعدة حسب أرهينيوس"},
+      {q:"أي التالي يُمثّل قاعدة حسب نظرية أرهينيوس:", options:["CH₃COOH", "HCl", "H₂SO₄", "Mg(OH)₂"], answer:3, explanation:"Mg(OH)₂ تحوي OH⁻ ="}
+    ]
+  },
+  {
+    title: "اليوم الثامن عشر",
+    topic: "القسم السابع: برونستد-لوري ولويس",
+    icon: "🔋",
+    color: "#ff80ab",
+    subtopics: [
+      {name:"نظرية برونستد-لوري ولويس وقوة الأحماض والقواعد", count:19}
+    ],
+    questions: [
+      {q:"أي التالي يُصنف حمضاً حسب نظرية برونستد-لوري:", options:["NH₄⁺", "I⁻", "SO₄²⁻", "S²⁻"], answer:0, explanation:"NH₄⁺ مانح لأيون H⁺ ="},
+      {q:"المادة التي لديها القابلية لتقبُّل البروتون تُمثّل تعريف القاعدة حسب نظرية:", options:["برونستد-لوري", "الأيونية", "أرهينيوس", "لويس"], answer:0, explanation:"القاعدة حسب برونستد ="},
+      {q:"القاعدة المرافقة لحمض الفورميك في: HCOOH + H₂O ⇌ HCOO⁻ + H₃O⁺:", options:["HCOOH", "H₂O", "H₃O⁺", "HCOO⁻"], answer:3, explanation:"HCOO⁻ = القاعدة"},
+      {q:"القاعدة المرافقة لحمض HCN:", options:["HCN⁻", "CN⁻", "CN²⁻", "H₂CN"], answer:1, explanation:"HCN → H⁺ + CN⁻."},
+      {q:"القاعدة المرافقة لحمض H₂SO₄:", options:["HSO₂⁺", "H₂SO₃", "HSO₂", "HSO₄⁻"], answer:3, explanation:"H₂SO₄ → H⁺ + HSO₄⁻."},
+      {q:"الحمض المرافق للقاعدة NH₃:", options:["NH₂", "NH⁻", "NH₃⁺", "NH₄⁺"], answer:3, explanation:"NH₃ + H⁺ → NH₄⁺."},
+      {q:"يُعد أيون الهيدرونيوم H₃O⁺ في التفاعل: CH₃COOH + H₂O ⇌ H₃O⁺ + CH₃COO⁻:", options:["حمضاً", "قاعدة", "حمضاً مرافقاً", "قاعدة مرافقة"], answer:2, explanation:"H₃O⁺ = حمض مرافق"},
+      {q:"حسب نموذج برونستد-لوري يُعد الماء في: NH₃ + H₂O ⇌ NH₄⁺ + OH⁻:", options:["قاعدة", "حمض", "حمض مرافق", "قاعدة مرافقة"], answer:1, explanation:"الماء منح H⁺ للأمونيا"},
+      {q:"المادة التي تسلك سلوك الحمض والقاعدة معاً تُسمى:", options:["الملحية", "المتعادلة", "المنظمة", "المترددة"], answer:3, explanation:"المادة المترددة"},
+      {q:"حمض الهيدروكلوريك HCl يُعد من الأحماض:", options:["أحادية البروتون", "ثنائية البروتونات", "ثلاثية البروتونات", "رباعية البروتونات"], answer:0, explanation:"HCl يمنح H⁺ واحداً ="},
+      {q:"حمض ثنائي البروتون:", options:["HCOOH", "H₂SO₄", "H₃PO₄", "CH₃COOH"], answer:1, explanation:"H₂SO₄ يحوي ذرتي"},
+      {q:"المادة المستقبلة لزوج من الإلكترونات:", options:["حمض لويس", "قاعدة لويس", "حمض برونستد-لوري", "قاعدة برونستد-لوري"], answer:0, explanation:"حمض لويس = مستقبل"},
+      {q:"أي المركبات التالية حمض حسب نظرية لويس:", options:["PCl₃", "BCl₃", "H₂O", "NH₃"], answer:1, explanation:"BCl₃ يستقبل زوج"},
+      {q:"أي المواد التالية تُصنف على أنها قاعدة لويس:", options:["NaOH", "NH₃", "NH₃⁺", "HCl"], answer:1, explanation:"NH₃ تمنح زوج"},
+      {q:"تُصنف المادة PCl₃ حسب نظرية لويس بأنها (P=15):", options:["قاعدة", "حمض", "مترددة", "ملح"], answer:0, explanation:"PCl₃ لها زوج حر →"},
+      {q:"أي التالي من الأحماض القوية:", options:["HCl", "HF", "CH₃COOH", "H₂S"], answer:0, explanation:"HCl حمض قوي يتأين"},
+      {q:"أي المركبات الكيميائية التالية يُصنف على أنه قاعدة قوية:", options:["SO₂", "NaOH", "NaCl", "NH₃"], answer:1, explanation:"NaOH قاعدة قوية تتحلل"},
+      {q:"حاصل ضرب تراكيز أيون الهيدروجين وأيون الهيدروكسيد في المحاليل المخففة يُعبّر عن:", options:["الرقم الهيدروجيني", "الرقم الهيدروكسيدي", "المولارية", "ثابت تأين الماء"], answer:3, explanation:"Kw = \[H⁺\]·\[OH⁻\] ="},
+      {q:"إذا كان \[H⁺\] \> \[OH⁻\] فإن المحلول:", options:["حمضي", "متعادل", "قاعدي", "متردد"], answer:0, explanation:"\[H⁺\] \> \[OH⁻\] ="}
+    ]
+  },
+  {
+    title: "اليوم التاسع عشر",
+    topic: "القسم السابع: pH والتعادل والمحلول المنظم",
+    icon: "📐",
+    color: "#ffd740",
+    subtopics: [
+      {name:"الرقم الهيدروجيني pH وتفاعل التعادل والمحلول المنظم", count:30}
+    ],
+    questions: [
+      {q:"سالب لوغاريتم تركيز أيون الهيدروجين:", options:["الرقم الهيدروجيني", "الرقم الهيدروكسيدي", "ثابت حاصل الذائبية", "ثابت تأين الماء"], answer:0, explanation:"pH = -log\[H⁺\]."},
+      {q:"إذا كان pH \< 2 لمحلول ما فإنه يُعد:", options:["متعادلاً", "قاعدة", "حمضاً", "متردداً"], answer:2, explanation:"pH \< 7 = حمضي."},
+      {q:"عند قياس pH لكريم البشرة وُجد أنه يساوي 7 لذا يمكن استنتاج أن الوسط:", options:["قاعدي", "متعادل", "حمضي", "ملح"], answer:1, explanation:"pH = 7 = متعادل."},
+      {q:"الرقم الهيدروجيني للماء المقطر:", options:["13", "7.5", "7", "0"], answer:2, explanation:"الماء المقطر متعادل →"},
+      {q:"حسب مقياس الحموضة pH يُعد المحلول قاعدياً إذا كانت قيمة:", options:["pH = 0", "pH = 7", "pH \\> 7", "pH \\< 7"], answer:2, explanation:"pH \> 7 = قاعدي."},
+      {q:"إذا كانت قيمة تركيز أيون الهيدرونيوم في محلول تساوي 10⁻⁹ M فإن الوسط يُعد:", options:["متعادلاً", "قاعدياً", "مادة مترددة", "حمضياً"], answer:1, explanation:"\[H⁺\] = 10⁻⁹ \< 10⁻⁷"},
+      {q:"إذا كانت قيمة الرقم الهيدروجيني لمحلول تساوي 13 فإن هذا المحلول يحمل الصفة:", options:["القاعدية", "الحامضية", "المترددة", "المتعادلة"], answer:0, explanation:"pH = 13 \> 7 → قاعدي."},
+      {q:"قيمة pH للحمض القوي تساوي:", options:["14", "7", "4", "1"], answer:3, explanation:"الحمض القوي pH قريب"},
+      {q:"إذا كانت قيمة الأس الهيدروجيني pH لمحلول تساوي 1.6 فإنه يُعد:", options:["حمضاً ضعيفاً", "حمضاً قوياً", "قاعدة ضعيفة", "قاعدة قوية"], answer:1, explanation:"pH = 1.6 قريب جداً من"},
+      {q:"إذا كانت قيمة \[H⁺\] = 1×10⁻¹¹ M لمحلول فإن ذلك يُمثّل:", options:["حمضاً", "قاعدة", "متعادلاً", "مشبعاً"], answer:1, explanation:"pH = 11 \> 7 → قاعدي."},
+      {q:"إذا كانت قيمة pOH لمحلول تساوي 8.5 فإنه يُعد:", options:["حمضاً", "قاعدة", "متعادلاً", "متردداً"], answer:0, explanation:"pOH = 8.5 \> 7 → pH ="},
+      {q:"قيمة pOH للقاعدة القوية:", options:["تساوي 14", "تساوي 7", "أكثر من 7", "تساوي 0"], answer:3, explanation:"القاعدة القوية pOH"},
+      {q:"محلول مائي من كلوريد الأمونيوم pH = 5 فإنّ قيمة pOH له:", options:["5", "9", "11", "6"], answer:1, explanation:"pOH = 14 - 5 = 9."},
+      {q:"إذا كانت قيمة pOH = 3 فإن \[H⁺\] يساوي:", options:["1×10⁻¹¹ M", "1×10⁻⁸ M", "11 M", "3 M"], answer:0, explanation:"pH = 14 - 3 = 11."},
+      {q:"إذا كانت قيمة pH لمحلول تساوي 14 فما تركيز أيون الهيدروكسيد:", options:["14", "2", "1", "0"], answer:2, explanation:"pH=14 → pOH=0 →"},
+      {q:"يُقاس الرقم الهيدروجيني باستخدام:", options:["مقياس pH الرقمي", "الهيدرومتر", "المانومتر", "مقياس فنتوري"], answer:0, explanation:"مقياس pH الرقمي يقيس"},
+      {q:"أي التالي ينتج من تفاعل حمض وقاعدة:", options:["ملح", "إستر", "حمض كربوكسيلي", "بنزين"], answer:0, explanation:"حمض + قاعدة → ملح +"},
+      {q:"حمض + قاعدة → ملح + ماء هذا يُمثّل تفاعل:", options:["احتراق", "تفكك", "إحلال بسيط", "إحلال مزدوج"], answer:3, explanation:"تفاعل التعادل = إحلال"},
+      {q:"أي تفاعلات التعادل التالية يعطي قيمة pH = 7:", options:["NH₃(aq) + HCl(aq)", "NaOH(aq) + HCl(aq)", "NaOH(aq) + HF(aq)", "KOH(aq) + CH₃COOH(aq)"], answer:1, explanation:"قاعدة قوية + حمض قوي"},
+      {q:"تفاعل حمض مع قاعدة واستخدام أحدهما في معرفة تركيز الآخر:", options:["المعايرة", "الاحتراق", "التقطير", "التمية"], answer:0, explanation:"تعريف المعايرة."},
+      {q:"محلول معروف التركيز يُستعمل لمعايرة محلول مجهول التركيز:", options:["المحلول القياسي", "المحلول المعياري", "المحلول المخفف", "المحلول المركز"], answer:0, explanation:"المحلول القياسي ="},
+      {q:"أصباغ كيميائية تتأثر ألوانها بالمحاليل الحمضية والقاعدية:", options:["المخاليط", "الكواشف", "المحاليل القياسية", "المحاليل المنظمة"], answer:1, explanation:"الكواشف = أصباغ تتأثر"},
+      {q:"عند نقطة نهاية المعايرة يتغيّر لون:", options:["الكاشف", "الحمض", "القاعدة", "الملح"], answer:0, explanation:"عند نقطة النهاية"},
+      {q:"عند تمئة الأملاح فإن الشق السالب من الملح يكتسب:", options:["أيونات الهيدروجين", "أيونات الهيدروكسيد", "أيونات النيتروجين", "أيونات الأكسجين"], answer:0, explanation:"الشق السالب يكتسب H⁺"},
+      {q:"ملح خلات (أسيتات) الصوديوم CH₃COONa يُنتج من تفاعل:", options:["CH₃COOH(aq) + NaOH(aq)", "CH₃COOH(aq) + NaCl(aq)", "CH₃COOH(aq) + Na₂SO₄(aq)", "CH₃COOH(aq) + NaNO₃(aq)"], answer:0, explanation:"حمض الخليك +"},
+      {q:"أي المواد التالية يُمثّل ملحاً حامضياً:", options:["فلوريد البوتاسيوم", "كلوريد الأمونيوم", "نترات الصوديوم", "هيدروكسيد الليثيوم"], answer:1, explanation:"كلوريد الأمونيوم ="},
+      {q:"يقاوم التغيرات في قيم pH عند إضافة كميات محددة من الأحماض أو القواعد:", options:["المحلول المعياري", "المحلول المنظم", "المحلول المركز", "المحلول المخفف"], answer:1, explanation:"تعريف المحلول المنظم."},
+      {q:"ينتج من إضافة قاعدة ضعيفة إلى حمضها المرافق:", options:["المحلول القياسي", "المحلول المخفف", "المحلول المشبع", "المحلول المنظم"], answer:3, explanation:"قاعدة ضعيفة + حمضها"},
+      {q:"وفقاً لمبدأ لوتشاتلييه إضافة حمض إلى المحلول المنظم \_\_\_ قيمة pH:", options:["لا تُغيّر", "تُزيد", "تُنقص", "تُضاعف"], answer:2, explanation:"إضافة حمض تُنقص pH"},
+      {q:"من خواص المحلول المنظم أنه:", options:["يجعل قيمة pH ثابتة تقريباً", "يزيد من تركيز الهيدروكسيد", "يتكون من قاعدة قوية وملحها", "يزيد من تركيز الهيدرونيوم"], answer:0, explanation:"المحلول المنظم يُبقي"}
+    ]
+  },
+  {
+    title: "اليوم العشرون",
+    topic: "القسم الثامن: الكيمياء الكهربائية",
+    icon: "🏆",
+    color: "#84ffff",
+    subtopics: [
+      {name:"الأكسدة والاختزال وأعداد التأكسد", count:18},
+      {name:"الخلية الجلفانية وجهود الاختزال", count:13},
+      {name:"البطاريات والتآكل والتحليل الكهربائي", count:17}
+    ],
+    questions: [
+      {q:"في عملية الأكسدة يحدث:", options:["زيادة في عدد التأكسد", "نقصان في عدد التأكسد", "اكتساب إلكترونات", "اكتساب نيوترونات"], answer:0, explanation:"الأكسدة = فقد"},
+      {q:"ماذا يحدث للعامل المختزل:", options:["يُختزل", "يتأكسد", "يكتسب إلكترونات", "لا يحدث شيء"], answer:1, explanation:"العامل المختزل يتأكسد"},
+      {q:"العامل المختزل القوي:", options:["كهروسالبيته مرتفعة", "كهروسالبيته منخفضة", "درجة غليانه مرتفعة جداً", "طاقة تأينه منخفضة"], answer:1, explanation:"كهروسالبية منخفضة ="},
+      {q:"المجموعة التي عناصرها تُعد عوامل مختزلة قوية:", options:["الهالوجينات", "العناصر الانتقالية", "الغازات النبيلة", "الفلزات القلوية"], answer:3, explanation:"الفلزات القلوية"},
+      {q:"يُعد العنصر عاملاً مؤكسداً قوياً إذا:", options:["وصل للتركيب الثماني", "كانت كهروسالبيته مرتفعة", "كانت طاقة تأينه منخفضة", "كانت درجة غليانه مرتفعة"], answer:1, explanation:"كهروسالبية مرتفعة ="},
+      {q:"أي العناصر التالية يُعد عاملاً مؤكسداً قوياً:", options:["F", "Cl", "Br", "I"], answer:0, explanation:"الفلور أكبر كهروسالبية"},
+      {q:"أي المعادلات التالية يُمثّل عملية الأكسدة:", options:["Ag(s)→Ag⁺(aq)+e⁻", "Hg²⁺(aq)+2e⁻→Hg(l)", "Al³⁺(aq)+3e⁻→Al(s)", "Mg²⁺(aq)+2e⁻→Mg(s)"], answer:0, explanation:"Ag فقد إلكتروناً = **◼ البطاريات والتآكل والتحليل"},
+      {q:"العامل المختزل في: Zn(s)+Cu²⁺(aq)→Zn²⁺(aq)+Cu(s):", options:["Zn²⁺(aq)", "Cu(s)", "Zn(s)", "Cu²⁺(aq)"], answer:2, explanation:"Zn فقد إلكترونات ="},
+      {q:"أي التالي يُمثّل نصف التفاعل: Fe²⁺(aq)+2e⁻→Fe(s):", options:["الحديد عامل مختزل", "ذرة الحديد اكتسبت إلكترونات", "الحديد عامل مؤكسد", "نقص عدد تأكسد ذرة الحديد"], answer:1, explanation:"Fe²⁺ اكتسب 2e⁻ →"},
+      {q:"طبقاً للتفاعل: Zn(s)+Cu²⁺(aq)→Zn²⁺(aq)+Cu(s):", options:["Zn(s) عامل مؤكسد", "Cu²⁺(aq) عامل مختزل", "Zn(s) حدث له اختزال", "Cu²⁺(aq) عامل مؤكسد"], answer:3, explanation:"Cu²⁺ اكتسب إلكترونات"},
+      {q:"عدد تأكسد الألومنيوم Al₁₃ في مركباته:", options:["-3", "+1", "+2", "+3"], answer:3, explanation:"Al في المجموعة 13 →"},
+      {q:"عدد تأكسد ذرة النيون Ne₁₀:", options:["+10", "+8", "+6", "0"], answer:3, explanation:"النيون غاز نبيل حر →"},
+      {q:"عدد الأكسدة للأكسجين في H₂O يساوي:", options:["0", "-2", "+1", "+2"], answer:1, explanation:"الأكسجين في معظم"},
+      {q:"عدد تأكسد الأكسجين في H₂O₂:", options:["0", "+1", "-1", "+2"], answer:2, explanation:"في الأكاسيد الفوقية"},
+      {q:"عدد تأكسد الكبريت في مركب H₂SO₄:", options:["-2", "+2", "+6", "+8"], answer:2, explanation:"2(+1) + S + 4(-2) = 0"},
+      {q:"عدد تأكسد الكربون في مركب كربونات الصوديوم Na₂CO₃:", options:["+4", "+2", "+1", "-2"], answer:0, explanation:"2(+1) + C + 3(-2) = 0"},
+      {q:"عدد تأكسد Cr في مركب K₂Cr₂O₇:", options:["-12", "+12", "-6", "+6"], answer:3, explanation:"2(+1) + 2Cr + 7(-2) ="},
+      {q:"عدد تأكسد الكلور في أيون ClO⁻:", options:["+2", "+1", "-1", "-2"], answer:1, explanation:"Cl + (-2) = -1 → Cl ="},
+      {q:"علم يدرس تحويل الطاقة الكيميائية إلى كهربائية والعكس:", options:["الكيمياء التحليلية", "الكيمياء الذرية", "الكيمياء الحيوية", "الكيمياء الكهربائية"], answer:3, explanation:"تعريف الكيمياء"},
+      {q:"الأنود قطب يحدث عنده:", options:["تفاعل اختزال", "تفاعل أكسدة", "اكتساب إلكترونات", "تراكم ترسبات"], answer:1, explanation:"الأنود = قطب الأكسدة."},
+      {q:"في الخلية الكهروكيميائية الكاثود قطب يحدث عنده تفاعل:", options:["التحلل", "التعادل", "الاختزال", "الأكسدة"], answer:2, explanation:"الكاثود = قطب"},
+      {q:"الخلية الجلفانية نوع من الخلايا:", options:["الكهرومغناطيسية", "الكهروكيميائية", "الكهروحرارية", "الشمسية"], answer:1, explanation:"الخلية الجلفانية نوع"},
+      {q:"ينشأ التيار الكهربائي من خلال التفاعل الكيميائي في:", options:["عملية مقاومة المعادن للتآكل", "الخلايا التحليلية", "عملية الطلاء المعدني", "الخلايا الجلفانية"], answer:3, explanation:"الخلايا الجلفانية"},
+      {q:"الأيونات الموجبة والسالبة تنتقل في الخلية الجلفانية عبر:", options:["المهبط", "المصعد", "السلك", "القنطرة الملحية"], answer:3, explanation:"القنطرة الملحية = ممر"},
+      {q:"طاقة تدفع الإلكترونات من أنود الخلية الكهروكيميائية إلى كاثودها:", options:["طاقة الوضع الكهربائية", "جهد الكاثود", "جهد الأنود", "فرق جهد الخلية الجلفانية"], answer:3, explanation:"فرق جهد الخلية ="},
+      {q:"جهد الاختزال هو قابلية المادة:", options:["للتحلل", "لاكتساب إلكترونات", "لفقد إلكترونات", "للتأكسد"], answer:1, explanation:"جهد الاختزال = قابلية"},
+      {q:"جهد الاختزال القياسي للهيدروجين يساوي:", options:["0 V", "1 V", "1.5 V", "2 V"], answer:0, explanation:"جهد قطب الهيدروجين"},
+      {q:"أي التالي يُمثّل معادلة جهد الخلية:", options:["E°cell = E°cathode - E°anode", "E°cell = E°anode - E°cathode", "E°cell = E°cathode + E°anode", "E°cell = E°anode + E°cathode"], answer:0, explanation:"E°cell = E°cathode -"},
+      {q:"خلية جلفانية إذا كان E°cathode = +0.8 V و E°anode = -0.76 V فكم تبلغ قيمة E°cell:", options:["-1.56 V", "+0.56 V", "+1.1 V", "+1.56 V"], answer:3, explanation:"E°cell = 0.8 -"},
+      {q:"إذا كان التفاعل تلقائياً فإن جهد الخلية:", options:["سالب", "موجب", "مرتفع", "منخفض"], answer:1, explanation:"التفاعل التلقائي →"},
+      {q:"إذا كان التفاعل غير تلقائي فإن الجهد القياسي للخلية يساوي:", options:["-1", "0", "+1", "+2"], answer:0, explanation:"غير تلقائي → جهد"},
+      {q:"أي البطاريات التالية تُستخدم لمرة واحدة وتعتمد على تفاعل في اتجاه واحد:", options:["بطارية السيارة", "بطارية الحاسوب", "البطارية الجافة", "المركم الرصاصي"], answer:2, explanation:"البطارية الجافة أولية"},
+      {q:"لإنتاج طاقة كهربائية عن طريق تفاعل أكسدة واختزال عكسي نستخدم:", options:["البطارية القلوية", "الخلية الجافة", "البطارية الثانوية", "بطارية الفضة"], answer:2, explanation:"البطارية الثانوية"},
+      {q:"من أمثلة البطاريات الثانوية:", options:["خلية الخارصين والكربون", "بطارية الفضة", "المركم الرصاصي", "البطارية القلوية"], answer:2, explanation:"المركم الرصاصي بطارية"},
+      {q:"أنود الخلية الجافة عبارة عن حافظة من:", options:["الخارصين", "الكربون", "الفوسفور", "الكبريت"], answer:0, explanation:"أنود الخلية الجافة ="},
+      {q:"في بطارية الخارصين والكربون الكاثود يُمثّل:", options:["عمود الكربون (جرافيت)", "الخارصين", "ملف نحاسي", "KOH"], answer:0, explanation:"كاثود الخلية الجافة ="},
+      {q:"مسحوق الخارصين Zn المخلوط مع هيدروكسيد البوتاسيوم KOH يُمثّل الأنود في:", options:["بطارية الليثيوم", "بطارية الفضة", "بطارية المركم الرصاصي", "الخلية الجلفانية"], answer:1, explanation:"بطارية الفضة القلوية"},
+      {q:"المحلول الموصل في المركم الرصاصي هو حمض:", options:["HCl", "HNO₃", "H₂SO₄", "H₃PO₄"], answer:2, explanation:"المركم الرصاصي يستخدم"},
+      {q:"فلز قلوي يُستخدم في البطاريات ويمتاز بحالة تأكسد أحادية:", options:["₃Li", "₄Be", "₁₂Mg", "₁₄Si"], answer:0, explanation:"الليثيوم Li فلز قلوي"},
+      {q:"العنصر الذي له أقل جهد اختزال قياسي:", options:["F", "Na", "Li", "Fr"], answer:2, explanation:"الليثيوم Li له أقل"},
+      {q:"تُستخدم خلايا وقود \_\_\_ في تزويد سفن الفضاء بالماء والكهرباء:", options:["الرصاص", "الميثان", "الكبريت", "الهيدروجين"], answer:3, explanation:"خلايا وقود الهيدروجين"},
+      {q:"خسارة الفلز الناتجة عن تفاعل أكسدة واختزال بين الفلز والمواد التي في البيئة:", options:["التأين", "الجلفنة", "التآكل", "التحلل"], answer:2, explanation:"تعريف التآكل."},
+      {q:"تُسمى عملية تغليف الحديد بفلز أكثر مقاومة للتأكسد:", options:["التحلل", "الجلفنة", "التأين", "الترسيب"], answer:1, explanation:"الجلفنة = تغليف"},
+      {q:"أي الطرق التالية تُستخدم لمنع التآكل:", options:["الأكسدة", "الاختزال", "الكينة", "الجلفنة"], answer:3, explanation:"الجلفنة والطلاء من"},
+      {q:"يُمكن فصل مكونات الماء H₂O باستخدام:", options:["الترشيح", "التبلور", "التسامي", "التحليل الكهربائي"], answer:3, explanation:"التحليل الكهربائي"},
+      {q:"للحصول على غاز الكلور من التحليل الكهربائي لمصهور كلوريد الصوديوم نستخدم:", options:["خلية داون", "عملية الجلفنة", "عملية هول هيروليت", "تفاعل الهلجنة"], answer:0, explanation:"خلية داون للتحليل"},
+      {q:"عملية يتم من خلالها إنتاج الهيدروجين في الاستعمالات التجارية وإنتاج الألومنيوم وتنقية الفلزات:", options:["التحليل الكهربائي", "الجلفنة", "الطلاء", "التكسير الحراري"], answer:0, explanation:"التحليل الكهربائي"},
+      {q:"أي التالي ليس من تطبيقات التحليل الكهربائي:", options:["خلية داون", "عملية هول هيروليت", "تفاعل الهلجنة", "الطلاء بالكهرباء"], answer:2, explanation:"تفاعل الهلجنة ليس من"}
+    ]
+  }
+];
+let state={};
+function loadState(){try{const s=localStorage.getItem('chem20_v3');if(s)state=JSON.parse(s);else state={}}catch(e){state={}}}
+function saveState(){try{localStorage.setItem('chem20_v3',JSON.stringify(state))}catch(e){}}
+function getDayState(i){if(!state[i])state[i]={answers:{},completed:false};return state[i]}
+function renderGrid(){
+  const grid=document.getElementById('dayGrid');grid.innerHTML='';
+  DAYS_DATA.forEach((day,i)=>{
+    const ds=getDayState(i);const totalQ=day.questions.length;const answered=Object.keys(ds.answers).length;
+    let statusClass='status-new',statusText='جديد';
+    if(ds.completed){statusClass='status-done';statusText='✓ مكتمل'}
+    else if(answered>0){statusClass='status-progress';statusText=`${answered}/${totalQ}`}
+    const card=document.createElement('div');card.className='day-card';card.onclick=()=>openQuiz(i);
+    card.innerHTML=`<div class="day-num">${i+1}</div>
+      <div class="day-icon" style="background:${day.color}15;color:${day.color}">${day.icon}</div>
+      <div class="day-title">${day.title}</div>
+      <div class="day-desc">${day.topic}</div>
+      <div class="day-meta"><span class="day-count">${totalQ} سؤال</span><span class="day-status ${statusClass}">${statusText}</span></div>`;
+    grid.appendChild(card)});updateGlobalStats()}
+function updateGlobalStats(){
+  let tQ=0,tA=0,tC=0,cD=0;
+  DAYS_DATA.forEach((day,i)=>{const ds=getDayState(i);tQ+=day.questions.length;const a=Object.keys(ds.answers).length;tA+=a;
+    Object.entries(ds.answers).forEach(([qi,ch])=>{if(day.questions[qi]&&ch===day.questions[qi].answer)tC++});if(ds.completed)cD++});
+  document.getElementById('totalQ').textContent=tQ;document.getElementById('totalDone').textContent=cD+' / 20';
+  document.getElementById('totalCorrect').textContent=tC;
+  document.getElementById('totalAvg').textContent=(tA>0?Math.round(tC/tA*100):0)+'%';
+  const p=Math.round(cD/20*100);document.getElementById('progressPct').textContent=p+'%';document.getElementById('progressFill').style.width=p+'%'}
+let currentDay=-1,timerInterval=null,timerSeconds=0;
+function openQuiz(di){
+  currentDay=di;const day=DAYS_DATA[di];const ds=getDayState(di);
+  timerSeconds=0;if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{timerSeconds++;const m=String(Math.floor(timerSeconds/60)).padStart(2,'0');const s=String(timerSeconds%60).padStart(2,'0');const el=document.getElementById('quizTimer');if(el)el.textContent=`${m}:${s}`},1000);
+  const tQ=day.questions.length;const ans=Object.keys(ds.answers).length;const letters=['أ','ب','ج','د'];
+  let h=`<div class="quiz-header"><button class="quiz-close" onclick="closeQuiz()">✕</button>
+    <div class="quiz-day-title" style="color:${day.color}">${day.icon} ${day.title}</div>
+    <div class="quiz-day-topic">${day.topic}</div>
+    <div style="font-size:11px;color:var(--cyan);opacity:.7;margin-bottom:10px">تصميم وإعداد الأستاذ / أحمد السيد علي</div>`;
+  if(day.subtopics&&day.subtopics.length>0){h+=`<div class="subtopics-list">`;day.subtopics.forEach(st=>{h+=`<span class="subtopic-tag"><b>${st.count}</b> ${st.name}</span>`});h+=`</div>`}
+  h+=`<div class="quiz-progress">`;day.questions.forEach((_,qi)=>{let c='';if(ds.answers[qi]!==undefined)c=ds.answers[qi]===day.questions[qi].answer?'correct':'wrong';h+=`<div class="quiz-dot ${c}"></div>`});
+  h+=`</div><div class="quiz-info"><span><div class="timer-box"><span class="dot"></span><span id="quizTimer">00:00</span></div></span><span>الإجابات: ${ans} / ${tQ}</span></div></div>`;
+  day.questions.forEach((q,qi)=>{
+    const ua=ds.answers[qi];const ia=ua!==undefined;const ic=ia&&ua===q.answer;let cc='';if(ia)cc=ic?'correct-card':'wrong-card';
+    h+=`<div class="q-card ${cc}" id="qcard-${qi}"><div class="q-number">السؤال ${qi+1} من ${tQ}</div><div class="q-text">${q.q}</div><div class="q-options">`;
+    q.options.forEach((o,oi)=>{let oc='';if(ia){oc='disabled ';if(oi===q.answer)oc+='is-correct';else if(oi===ua)oc+='is-wrong';else oc+='dim'}
+      h+=`<div class="q-option ${oc}" ${!ia?`onclick="sel(${qi},${oi})"`:''}><span class="letter">${letters[oi]}</span><span>${o}</span></div>`});
+    h+=`</div>`;if(q.explanation)h+=`<div class="q-explanation ${ia?'show':''}" id="expl-${qi}">💡 ${q.explanation}</div>`;h+=`</div>`});
+  const cc=Object.entries(ds.answers).filter(([qi,a])=>a===day.questions[qi].answer).length;
+  h+=`<div class="quiz-footer"><div class="quiz-score"><b>${cc}</b><span>/ ${tQ} صحيحة</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-reset" onclick="resetDay(${di})">إعادة</button>
+    ${ans===tQ&&!ds.completed?`<button class="btn btn-primary" onclick="finishDay(${di})">إنهاء الاختبار</button>`:''}
+    ${ds.completed?'<span style="color:var(--green);font-weight:700;padding:10px">✓ مكتمل</span>':''}</div></div>`;
+  document.getElementById('quizContainer').innerHTML=h;document.getElementById('quizOverlay').classList.add('active');document.body.style.overflow='hidden';document.getElementById('quizOverlay').scrollTop=0}
+function sel(qi,oi){const ds=getDayState(currentDay);if(ds.answers[qi]!==undefined)return;ds.answers[qi]=oi;saveState();openQuiz(currentDay);setTimeout(()=>{const el=document.getElementById('qcard-'+qi);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},100)}
+function closeQuiz(){if(timerInterval)clearInterval(timerInterval);document.getElementById('quizOverlay').classList.remove('active');document.body.style.overflow='';renderGrid()}
+function resetDay(di){if(!confirm('هل تريد إعادة جميع الأسئلة لهذا اليوم؟'))return;state[di]={answers:{},completed:false};saveState();openQuiz(di)}
+function finishDay(di){
+  const day=DAYS_DATA[di];const ds=getDayState(di);ds.completed=true;saveState();
+  const tQ=day.questions.length;const c=Object.entries(ds.answers).filter(([qi,a])=>a===day.questions[qi].answer).length;const p=Math.round(c/tQ*100);
+  let icon='🎉',msg='أداء رائع! استمر بهذا المستوى',bc='var(--green)';
+  if(p<50){icon='💪';msg='تحتاج مراجعة أكثر، لا تستسلم!';bc='var(--red)'}else if(p<75){icon='📈';msg='أداء جيد، واصل التحسن!';bc='var(--orange)'}
+  document.getElementById('resultsBox').innerHTML=`<div class="results-icon">${icon}</div><div class="results-title">${day.title}<br>${day.topic}</div><div class="results-score">${p}%</div><div class="results-bar"><div class="results-bar-fill" style="width:${p}%;background:${bc}"></div></div><div class="results-detail">${c} إجابة صحيحة من ${tQ} سؤال<br>${msg}</div><button class="btn btn-primary" onclick="closeResults()">حسناً</button>`;
+  document.getElementById('resultsOverlay').classList.add('active')}
+function closeResults(){document.getElementById('resultsOverlay').classList.remove('active');openQuiz(currentDay)}
+loadState();renderGrid();
+</script></body></html>
